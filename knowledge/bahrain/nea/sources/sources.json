@@ -1,0 +1,15 @@
+{
+  "sources": [
+    {
+      "source_id": "BH-NEA-WEBSITE-STANDARDS",
+      "title": "Website Standards",
+      "category": "website",
+      "authority": "Information & eGovernment Authority",
+      "source_page_url": "https://www.nea.gov.bh/Docs",
+      "document_url": "https://www.nea.gov.bh/Attachments/Standards/Website-Standards-V1.0.pdf",
+      "source_format": "pdf",
+      "enabled": true,
+      "verified": true
+    }
+  ]
+}

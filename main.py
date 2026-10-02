@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 
 from api.v1 import upload
 from api.v1 import analysis
+from api.v1 import design_analysis
 
 from core.config import settings
 
@@ -24,16 +25,21 @@ def create_application() -> FastAPI:
         allow_headers=["*"],
     )
 
-    # Existing upload endpoint
+    # Upload endpoint
     application.include_router(
         upload.router,
         prefix="/api/v1/upload",
-        tags=["Upload"]
+        tags=["Upload"],
     )
 
-    # New document analysis endpoint
+    # Document analysis endpoint
     application.include_router(
         analysis.router
+    )
+
+    # Design analysis endpoint
+    application.include_router(
+        design_analysis.router
     )
 
     return application
@@ -50,15 +56,20 @@ templates = Jinja2Templates(
 app.mount(
     "/static",
     StaticFiles(directory="static"),
-    name="static"
+    name="static",
 )
 
 
-@app.get("/", include_in_schema=False)
-def homepage(request: Request):
+@app.get(
+    "/",
+    include_in_schema=False,
+)
+def homepage(
+    request: Request
+):
     return templates.TemplateResponse(
         request=request,
-        name="index.html"
+        name="index.html",
     )
 
 

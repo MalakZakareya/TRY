@@ -1,0 +1,53 @@
+{
+  "sources": [
+    {
+      "id": "BH-LABOUR-36-2012",
+      "title_ar": "قانون رقم (36) لسنة 2012 بإصدار قانون العمل في القطاع الأهلي",
+      "title_en": "LAW NO. (36) OF 2012 PROMULGATING THE LABOUR LAW FOR THE PRIVATE SECTOR",
+      "law_number": "36",
+      "year": 2012,
+      "category": "labour",
+      "authority": "Legislation and Legal Opinion Commission - Bahrain",
+      "official_gazette": "3063",
+      "publication_date": "2012-08-02",
+
+      "source_page_url": "https://www.lloc.gov.bh/Legislation/id/K3612",
+      "consolidated_url": "https://www.lloc.gov.bh/FullAr/K3612.docx",
+
+      "source_format": "docx",
+      "parser_type": "bahrain_lloc_consolidated_docx",
+
+      "law_title_marker": "قانون العمل في القطاع الأهلي",
+
+      "has_amendments": true,
+      "amendments_count": 4,
+
+      "enabled": true,
+      "verified": true
+    },
+    {
+      "id": "BH-PDPL-30-2018",
+      "title_ar": "قانون رقم (30) لسنة 2018 بإصدار قانون حماية البيانات الشخصية",
+      "title_en": "LAW NO. (30) OF 2018 WITH RESPECT TO PERSONAL DATA PROTECTION LAW",
+      "law_number": "30",
+      "year": 2018,
+      "category": "personal_data_protection",
+      "authority": "Legislation and Legal Opinion Commission - Bahrain",
+      "official_gazette": "3375",
+      "publication_date": "2018-07-19",
+
+      "source_page_url": "https://www.lloc.gov.bh/Legislation/id/K3018",
+      "consolidated_url": "https://www.lloc.gov.bh/FullAr/K3018.docx",
+
+      "source_format": "docx",
+      "parser_type": "bahrain_lloc_consolidated_docx",
+
+      "law_title_marker": "قانون حماية البيانات الشخصية",
+
+      "has_amendments": true,
+
+      "enabled": true,
+      "verified": true
+    }
+  ]
+}

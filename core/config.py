@@ -12,7 +12,13 @@ class Settings(BaseSettings):
     CORS_ORIGINS: list[str] = ["*"]
     UPLOAD_DIR: str = "uploads"
 
-    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
+    # OpenAI
+    OPENAI_API_KEY: str = ""
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        extra="ignore"
+    )
 
 
 settings = Settings()

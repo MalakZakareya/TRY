@@ -1,12 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Agentic AI Workspace</title>
 
     <style>
+
         * {
             margin: 0;
             padding: 0;
@@ -72,6 +79,7 @@
             margin: auto;
         }
 
+
         /* =========================
            NAVBAR
         ========================= */
@@ -130,10 +138,15 @@
         .status-dot {
             width: 8px;
             height: 8px;
+
             border-radius: 50%;
+
             background: var(--green);
-            box-shadow: 0 0 12px rgba(74,222,128,0.5);
+
+            box-shadow:
+                0 0 12px rgba(74,222,128,0.5);
         }
+
 
         /* =========================
            HERO
@@ -143,13 +156,18 @@
             padding: 90px 0 60px;
 
             display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
+
+            grid-template-columns:
+                1.15fr 0.85fr;
+
             gap: 60px;
+
             align-items: end;
         }
 
         .eyebrow {
             color: var(--purple-light);
+
             font-size: 12px;
             font-weight: 700;
 
@@ -159,7 +177,9 @@
         }
 
         .hero h1 {
-            font-size: clamp(48px, 7vw, 82px);
+            font-size:
+                clamp(48px, 7vw, 82px);
+
             line-height: 0.98;
 
             letter-spacing: -4px;
@@ -182,6 +202,7 @@
             padding-bottom: 8px;
         }
 
+
         /* =========================
            FEATURES
         ========================= */
@@ -191,6 +212,7 @@
             margin-bottom: 28px;
 
             display: flex;
+
             justify-content: space-between;
             align-items: end;
         }
@@ -222,9 +244,11 @@
 
             padding: 28px;
 
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
-            border-radius: var(--radius);
+            border-radius:
+                var(--radius);
 
             background:
                 linear-gradient(
@@ -239,7 +263,8 @@
 
             overflow: hidden;
 
-            transition: 0.25s ease;
+            transition:
+                0.25s ease;
         }
 
         .feature-card::after {
@@ -264,7 +289,8 @@
         }
 
         .feature-card:hover {
-            transform: translateY(-6px);
+            transform:
+                translateY(-6px);
 
             border-color:
                 rgba(167,139,250,0.45);
@@ -283,10 +309,12 @@
 
         .feature-top {
             display: flex;
+
             align-items: center;
             justify-content: space-between;
 
             position: relative;
+
             z-index: 2;
         }
 
@@ -302,12 +330,16 @@
 
             font-size: 22px;
 
-            background: rgba(255,255,255,0.07);
-            border: 1px solid var(--border);
+            background:
+                rgba(255,255,255,0.07);
+
+            border:
+                1px solid var(--border);
         }
 
         .feature-number {
             color: var(--muted);
+
             font-size: 12px;
         }
 
@@ -315,12 +347,15 @@
             margin-top: 70px;
 
             position: relative;
+
             z-index: 2;
         }
 
         .feature-content h3 {
             font-size: 30px;
+
             line-height: 1.05;
+
             letter-spacing: -1px;
 
             margin-bottom: 18px;
@@ -330,6 +365,7 @@
             color: var(--muted);
 
             font-size: 14px;
+
             line-height: 1.7;
         }
 
@@ -341,6 +377,7 @@
             right: 28px;
 
             display: flex;
+
             align-items: center;
             justify-content: space-between;
 
@@ -369,18 +406,23 @@
             transition: 0.2s;
         }
 
-        .feature-card:hover .feature-arrow {
-            transform: translateX(4px);
+        .feature-card:hover
+        .feature-arrow {
+            transform:
+                translateX(4px);
         }
+
 
         /* =========================
            WORKSPACE
         ========================= */
 
         .workspace {
-            border-top: 1px solid var(--border);
+            border-top:
+                1px solid var(--border);
 
-            padding: 60px 0 100px;
+            padding:
+                60px 0 100px;
         }
 
         .hidden {
@@ -389,16 +431,21 @@
 
         .workspace-top {
             display: flex;
-            justify-content: space-between;
+
+            justify-content:
+                space-between;
+
             align-items: center;
 
             margin-bottom: 35px;
         }
 
         .back-button {
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
             background: transparent;
+
             color: white;
 
             padding: 11px 18px;
@@ -414,9 +461,11 @@
         }
 
         .workspace-label {
-            color: var(--purple-light);
+            color:
+                var(--purple-light);
 
             font-size: 12px;
+
             font-weight: 700;
 
             letter-spacing: 1.5px;
@@ -438,7 +487,8 @@
 
             letter-spacing: -2px;
 
-            margin: 12px 0 18px;
+            margin:
+                12px 0 18px;
         }
 
         .panel-info p {
@@ -449,6 +499,7 @@
             max-width: 420px;
         }
 
+
         /* =========================
            UPLOAD AREA
         ========================= */
@@ -456,7 +507,8 @@
         .upload-area {
             min-height: 390px;
 
-            border: 1px dashed
+            border:
+                1px dashed
                 rgba(255,255,255,0.18);
 
             border-radius: 28px;
@@ -464,7 +516,9 @@
             padding: 45px;
 
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
             justify-content: center;
 
@@ -481,7 +535,8 @@
         }
 
         .upload-area.dragging {
-            border-color: var(--purple-light);
+            border-color:
+                var(--purple-light);
 
             background:
                 rgba(139,92,246,0.08);
@@ -539,7 +594,8 @@
         }
 
         .choose-button:hover {
-            transform: translateY(-2px);
+            transform:
+                translateY(-2px);
         }
 
         .selected-file {
@@ -551,11 +607,14 @@
 
             border-radius: 14px;
 
-            background: var(--surface-2);
+            background:
+                var(--surface-2);
 
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
             display: flex;
+
             align-items: center;
             justify-content: space-between;
 
@@ -571,9 +630,11 @@
         }
 
         .remove-button {
-            border: 1px solid var(--border);
+            border:
+                1px solid var(--border);
 
             background: transparent;
+
             color: white;
 
             border-radius: 9px;
@@ -583,105 +644,174 @@
 
 
         /* =========================
-           DOCUMENT ANALYSIS RESULT
+           ANALYSIS ACTIONS
         ========================= */
 
         .analysis-actions {
             width: 100%;
+
             margin-top: 18px;
+
             display: flex;
+
             gap: 12px;
         }
 
         .analyze-button {
             flex: 1;
+
             border: none;
+
             border-radius: 12px;
+
             padding: 14px 18px;
-            background: linear-gradient(135deg, var(--purple), var(--blue));
+
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--purple),
+                    var(--blue)
+                );
+
             color: white;
+
             font-weight: 700;
-            transition: 0.2s ease;
+
+            transition:
+                0.2s ease;
         }
 
         .analyze-button:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.06);
+            transform:
+                translateY(-2px);
+
+            filter:
+                brightness(1.06);
         }
 
         .analyze-button:disabled {
             opacity: 0.55;
-            cursor: not-allowed;
+
+            cursor:
+                not-allowed;
+
             transform: none;
         }
 
         .analysis-status {
             width: 100%;
+
             margin-top: 16px;
+
             padding: 14px 16px;
+
             border-radius: 12px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid var(--border);
+
+            background:
+                rgba(255,255,255,0.04);
+
+            border:
+                1px solid var(--border);
+
             color: var(--muted);
+
             font-size: 14px;
+
             text-align: left;
         }
 
         .analysis-status.success {
-            border-color: rgba(74,222,128,0.35);
+            border-color:
+                rgba(74,222,128,0.35);
+
             color: #bbf7d0;
-            background: rgba(74,222,128,0.07);
+
+            background:
+                rgba(74,222,128,0.07);
         }
 
         .analysis-status.error {
-            border-color: rgba(248,113,113,0.35);
+            border-color:
+                rgba(248,113,113,0.35);
+
             color: #fecaca;
-            background: rgba(248,113,113,0.07);
+
+            background:
+                rgba(248,113,113,0.07);
         }
+
+
+        /* =========================
+           ANALYSIS RESULT
+        ========================= */
 
         .analysis-result {
             width: 100%;
+
             margin-top: 18px;
+
             border-radius: 16px;
-            border: 1px solid var(--border);
-            background: var(--surface-2);
+
+            border:
+                1px solid var(--border);
+
+            background:
+                var(--surface-2);
+
             overflow: hidden;
+
             text-align: left;
         }
 
         .analysis-result-header {
             padding: 18px;
-            border-bottom: 1px solid var(--border);
+
+            border-bottom:
+                1px solid var(--border);
         }
 
         .analysis-result-header strong {
             display: block;
+
             margin-bottom: 5px;
+
             font-size: 15px;
         }
 
         .analysis-result-header span {
             color: var(--muted);
+
             font-size: 12px;
         }
 
         .analysis-metadata {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
             gap: 12px;
+
             padding: 18px;
         }
 
         .analysis-meta-card {
             padding: 14px;
+
             border-radius: 12px;
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.025);
+
+            border:
+                1px solid var(--border);
+
+            background:
+                rgba(255,255,255,0.025);
         }
 
         .analysis-meta-card small {
             display: block;
+
             color: var(--muted);
+
             margin-bottom: 6px;
         }
 
@@ -690,35 +820,258 @@
         }
 
         .analysis-preview {
-            padding: 0 18px 18px;
+            padding:
+                0 18px 18px;
         }
 
         .analysis-preview small {
             display: block;
+
             color: var(--muted);
+
             margin-bottom: 10px;
         }
 
         .analysis-preview pre {
             white-space: pre-wrap;
+
             word-break: break-word;
+
             max-height: 260px;
+
             overflow: auto;
+
             padding: 16px;
+
             border-radius: 12px;
+
             background: #0c0e12;
-            border: 1px solid var(--border);
+
+            border:
+                1px solid var(--border);
+
             color: #d1d5db;
+
             line-height: 1.6;
-            font-family: Consolas, "Courier New", monospace;
+
+            font-family:
+                Consolas,
+                "Courier New",
+                monospace;
+
             font-size: 12px;
         }
 
-        @media(max-width: 600px) {
-            .analysis-metadata {
-                grid-template-columns: 1fr;
-            }
+
+        /* =========================
+           LEGAL + DESIGN REPORT
+        ========================= */
+
+        .legal-report {
+            padding:
+                0 18px 18px;
         }
+
+        .legal-summary {
+            padding: 16px;
+
+            margin-bottom: 14px;
+
+            border-radius: 12px;
+
+            border:
+                1px solid var(--border);
+
+            background:
+                rgba(255,255,255,0.025);
+
+            line-height: 1.65;
+        }
+
+        .legal-summary small {
+            display: block;
+
+            color: var(--muted);
+
+            margin-bottom: 7px;
+        }
+
+        .legal-point {
+            padding: 16px;
+
+            margin-top: 12px;
+
+            border-radius: 14px;
+
+            border:
+                1px solid var(--border);
+
+            background: #0c0e12;
+        }
+
+        .legal-point-top {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            gap: 12px;
+
+            align-items:
+                flex-start;
+
+            margin-bottom: 12px;
+        }
+
+        .legal-point h4 {
+            font-size: 15px;
+
+            line-height: 1.4;
+        }
+
+        .legal-badge {
+            flex: 0 0 auto;
+
+            padding: 6px 9px;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+
+            font-weight: 800;
+
+            letter-spacing: .5px;
+
+            border:
+                1px solid var(--border);
+        }
+
+        .legal-badge.pass {
+            color: #bbf7d0;
+
+            background:
+                rgba(74,222,128,.09);
+
+            border-color:
+                rgba(74,222,128,.3);
+        }
+
+        .legal-badge.issue {
+            color: #fecaca;
+
+            background:
+                rgba(248,113,113,.09);
+
+            border-color:
+                rgba(248,113,113,.3);
+        }
+
+        .legal-badge.warning {
+            color: #fde68a;
+
+            background:
+                rgba(250,204,21,.09);
+
+            border-color:
+                rgba(250,204,21,.3);
+        }
+
+        .legal-badge.not-verified {
+            color: #d1d5db;
+
+            background:
+                rgba(156,163,175,.09);
+
+            border-color:
+                rgba(156,163,175,.3);
+        }
+
+        .legal-field {
+            margin-top: 11px;
+
+            color: #d1d5db;
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            white-space: pre-wrap;
+        }
+
+        .legal-field strong {
+            display: block;
+
+            color: var(--muted);
+
+            font-size: 11px;
+
+            margin-bottom: 4px;
+
+            text-transform:
+                uppercase;
+
+            letter-spacing: .5px;
+        }
+
+        .legal-source {
+            margin-top: 8px;
+
+            padding: 10px 12px;
+
+            border-radius: 10px;
+
+            background:
+                rgba(255,255,255,.025);
+
+            border:
+                1px solid var(--border);
+
+            font-size: 12px;
+
+            line-height: 1.5;
+        }
+
+        .legal-source a {
+            color:
+                var(--purple-light);
+
+            text-decoration: none;
+
+            word-break:
+                break-all;
+        }
+
+
+        /* =========================
+           DESIGN REVIEW SUMMARY
+        ========================= */
+
+        .design-status-summary {
+            width: 100%;
+        }
+
+        .design-status-summary
+        .analysis-metadata {
+            padding: 0;
+
+            grid-template-columns:
+                repeat(4, 1fr);
+        }
+
+        .design-status-summary
+        .analysis-meta-card {
+            text-align: center;
+        }
+
+        .design-status-summary
+        .analysis-meta-card strong {
+            display: block;
+
+            font-size: 22px;
+
+            margin-top: 4px;
+        }
+
 
         /* =========================
            DRAFT OPTIONS
@@ -749,9 +1102,14 @@
             color: white;
 
             display: flex;
+
             flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-start;
+
+            justify-content:
+                space-between;
+
+            align-items:
+                flex-start;
 
             text-align: left;
 
@@ -759,21 +1117,25 @@
         }
 
         .draft-option:hover {
-            border-color: var(--purple-light);
+            border-color:
+                var(--purple-light);
 
             background:
                 rgba(139,92,246,0.08);
 
-            transform: translateY(-2px);
+            transform:
+                translateY(-2px);
         }
 
         .draft-option small {
-            color: var(--purple-light);
+            color:
+                var(--purple-light);
         }
 
         .draft-option strong {
             font-size: 16px;
         }
+
 
         /* =========================
            FOOTER
@@ -783,10 +1145,14 @@
             min-height: 90px;
 
             display: flex;
-            align-items: center;
-            justify-content: space-between;
 
-            border-top: 1px solid var(--border);
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+            border-top:
+                1px solid var(--border);
 
             color: #626773;
 
@@ -794,6 +1160,7 @@
 
             letter-spacing: 1px;
         }
+
 
         /* =========================
            RESPONSIVE
@@ -803,6 +1170,7 @@
 
             .hero {
                 grid-template-columns: 1fr;
+
                 gap: 25px;
 
                 padding-top: 65px;
@@ -822,7 +1190,14 @@
 
             .workspace-panel {
                 grid-template-columns: 1fr;
+
                 gap: 35px;
+            }
+
+            .design-status-summary
+            .analysis-metadata {
+                grid-template-columns:
+                    repeat(2, 1fr);
             }
         }
 
@@ -842,6 +1217,7 @@
 
             .hero {
                 padding-top: 55px;
+
                 padding-bottom: 45px;
             }
 
@@ -854,19 +1230,31 @@
             }
 
             .upload-area {
-                padding: 30px 20px;
+                padding:
+                    30px 20px;
+            }
+
+            .analysis-metadata {
+                grid-template-columns: 1fr;
+            }
+
+            .design-status-summary
+            .analysis-metadata {
+                grid-template-columns: 1fr;
             }
 
             footer {
                 flex-direction: column;
+
                 justify-content: center;
+
                 gap: 8px;
             }
         }
+
     </style>
+
 </head>
-
-
 <body>
 
 <div class="page">
@@ -886,7 +1274,6 @@
             </div>
 
         </div>
-
 
         <div class="workspace-status">
 
@@ -919,13 +1306,10 @@
 
             </div>
 
-
             <p class="hero-description">
-
                 Analyze documents, review designs,
                 and create professional drafts through
                 intelligent AI-powered workflows.
-
             </p>
 
         </section>
@@ -948,7 +1332,6 @@
 
         <section class="features">
 
-
             <!-- ANALYZE DOCUMENT -->
 
             <button
@@ -968,7 +1351,6 @@
 
                 </div>
 
-
                 <div class="feature-content">
 
                     <h3>
@@ -986,7 +1368,6 @@
 
                 </div>
 
-
                 <div class="feature-footer">
 
                     <span>
@@ -1000,7 +1381,6 @@
                 </div>
 
             </button>
-
 
 
             <!-- REVIEW DESIGN -->
@@ -1022,7 +1402,6 @@
 
                 </div>
 
-
                 <div class="feature-content">
 
                     <h3>
@@ -1032,14 +1411,13 @@
                     </h3>
 
                     <p>
-                        Upload a design and receive
-                        intelligent feedback on layout,
-                        typography, readability,
-                        visual hierarchy, and usability.
+                        Upload a website or application
+                        design and receive an AI-powered
+                        review against relevant Bahrain
+                        NEA standards and guidelines.
                     </p>
 
                 </div>
-
 
                 <div class="feature-footer">
 
@@ -1054,7 +1432,6 @@
                 </div>
 
             </button>
-
 
 
             <!-- CREATE DRAFT -->
@@ -1076,7 +1453,6 @@
 
                 </div>
 
-
                 <div class="feature-content">
 
                     <h3>
@@ -1094,7 +1470,6 @@
 
                 </div>
 
-
                 <div class="feature-footer">
 
                     <span>
@@ -1109,11 +1484,9 @@
 
             </button>
 
-
         </section>
 
     </div>
-
 
 
     <!-- WORKSPACE -->
@@ -1161,8 +1534,7 @@
 
                 <p>
                     Upload a PDF, DOCX, or TXT document.
-                    In the next development phase,
-                    the AI will read the document,
+                    The AI will read the document,
                     understand its contents, retrieve
                     relevant Bahrain regulations,
                     and provide structured feedback.
@@ -1229,10 +1601,12 @@
 
                 </div>
 
+
                 <div
                     id="documentActions"
                     class="analysis-actions hidden"
                 >
+
                     <button
                         id="analyzeDocumentButton"
                         class="analyze-button"
@@ -1241,49 +1615,116 @@
                     >
                         Analyze Document
                     </button>
+
                 </div>
+
 
                 <div
                     id="analysisStatus"
                     class="analysis-status hidden"
                 ></div>
 
+
                 <div
                     id="analysisResult"
                     class="analysis-result hidden"
                 >
+
                     <div class="analysis-result-header">
-                        <strong>Document processed successfully</strong>
+
+                        <strong>
+                            Document processed successfully
+                        </strong>
+
                         <span id="resultFileName"></span>
+
                     </div>
+
 
                     <div class="analysis-metadata">
-                        <div class="analysis-meta-card">
-                            <small>File type</small>
-                            <strong id="resultFileType">—</strong>
-                        </div>
 
                         <div class="analysis-meta-card">
-                            <small>File size</small>
-                            <strong id="resultFileSize">—</strong>
+
+                            <small>
+                                File type
+                            </small>
+
+                            <strong id="resultFileType">
+                                —
+                            </strong>
+
                         </div>
 
+
                         <div class="analysis-meta-card">
-                            <small>Characters extracted</small>
-                            <strong id="resultCharacters">—</strong>
+
+                            <small>
+                                File size
+                            </small>
+
+                            <strong id="resultFileSize">
+                                —
+                            </strong>
+
                         </div>
+
+
+                        <div class="analysis-meta-card">
+
+                            <small>
+                                Characters extracted
+                            </small>
+
+                            <strong id="resultCharacters">
+                                —
+                            </strong>
+
+                        </div>
+
                     </div>
 
-                    <div class="analysis-preview">
-                        <small>Extracted text preview</small>
-                        <pre id="resultTextPreview"></pre>
+
+                    <div class="legal-report">
+
+                        <div class="legal-summary">
+
+                            <small>
+                                Document analysis
+                            </small>
+
+                            <div id="resultDocumentType">
+                                Document type: —
+                            </div>
+
+                            <div id="resultLanguage">
+                                Language: —
+                            </div>
+
+                        </div>
+
+
+                        <div class="legal-summary">
+
+                            <small>
+                                Summary
+                            </small>
+
+                            <div id="resultSummary">
+                                —
+                            </div>
+
+                        </div>
+
+
+                        <div id="legalAnalysisList"></div>
+
                     </div>
+
                 </div>
 
             </div>
 
         </div>
-
 
 
         <!-- DESIGN -->
@@ -1306,10 +1747,11 @@
 
                 <p>
                     Upload a PNG, JPG, JPEG, or PDF.
-                    The AI design workflow will later
-                    evaluate layout, typography,
-                    visual hierarchy, consistency,
-                    readability, and usability.
+                    The AI will visually inspect the
+                    website or application design,
+                    retrieve relevant Bahrain NEA
+                    requirements, and generate a
+                    structured compliance review.
                 </p>
 
             </div>
@@ -1373,10 +1815,139 @@
 
                 </div>
 
+
+                <div
+                    id="designActions"
+                    class="analysis-actions hidden"
+                >
+
+                    <button
+                        id="analyzeDesignButton"
+                        class="analyze-button"
+                        type="button"
+                        onclick="analyzeDesign()"
+                    >
+                        Analyze Design
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="designAnalysisStatus"
+                    class="analysis-status hidden"
+                ></div>
+
+
+                <div
+                    id="designAnalysisResult"
+                    class="analysis-result hidden"
+                >
+
+                    <div class="analysis-result-header">
+
+                        <strong>
+                            Design review completed
+                        </strong>
+
+                        <span
+                            id="designResultFileName"
+                        ></span>
+
+                    </div>
+
+
+                    <div class="analysis-metadata">
+
+                        <div class="analysis-meta-card">
+
+                            <small>
+                                File type
+                            </small>
+
+                            <strong
+                                id="designResultFileType"
+                            >
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-meta-card">
+
+                            <small>
+                                Pages
+                            </small>
+
+                            <strong
+                                id="designResultPages"
+                            >
+                                —
+                            </strong>
+
+                        </div>
+
+
+                        <div class="analysis-meta-card">
+
+                            <small>
+                                NEA requirements
+                            </small>
+
+                            <strong
+                                id="designResultRequirements"
+                            >
+                                —
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="legal-report">
+
+                        <div class="legal-summary">
+
+                            <small>
+                                Compliance summary
+                            </small>
+
+                            <div
+                                id="designStatusSummary"
+                                class="design-status-summary"
+                            ></div>
+
+                        </div>
+
+
+                        <div class="legal-summary">
+
+                            <small>
+                                Detected design elements
+                            </small>
+
+                            <div
+                                id="designDetectedElements"
+                            >
+                                —
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="designComplianceList"
+                        ></div>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>
-
 
 
         <!-- DRAFT -->
@@ -1507,8 +2078,6 @@
     </footer>
 
 </div>
-
-
 <script>
 
     const homeView =
@@ -1530,7 +2099,9 @@
     function hidePanels() {
 
         documentPanel.classList.add("hidden");
+
         designPanel.classList.add("hidden");
+
         draftPanel.classList.add("hidden");
 
     }
@@ -1547,19 +2118,27 @@
 
         if (type === "document") {
 
-            documentPanel.classList.remove("hidden");
+            documentPanel.classList.remove(
+                "hidden"
+            );
 
         }
+
 
         if (type === "design") {
 
-            designPanel.classList.remove("hidden");
+            designPanel.classList.remove(
+                "hidden"
+            );
 
         }
 
+
         if (type === "draft") {
 
-            draftPanel.classList.remove("hidden");
+            draftPanel.classList.remove(
+                "hidden"
+            );
 
         }
 
@@ -1579,6 +2158,7 @@
         hidePanels();
 
         homeView.classList.remove("hidden");
+
 
         window.scrollTo({
             top: 0,
@@ -1630,7 +2210,10 @@
     );
 
 
-    function showSelectedFile(type, file) {
+    function showSelectedFile(
+        type,
+        file
+    ) {
 
         if (!file) return;
 
@@ -1643,11 +2226,15 @@
 
             document.getElementById(
                 "documentSelected"
-            ).classList.remove("hidden");
+            ).classList.remove(
+                "hidden"
+            );
 
             document.getElementById(
                 "documentActions"
-            ).classList.remove("hidden");
+            ).classList.remove(
+                "hidden"
+            );
 
             resetAnalysisResult();
 
@@ -1662,7 +2249,17 @@
 
             document.getElementById(
                 "designSelected"
-            ).classList.remove("hidden");
+            ).classList.remove(
+                "hidden"
+            );
+
+            document.getElementById(
+                "designActions"
+            ).classList.remove(
+                "hidden"
+            );
+
+            resetDesignResult();
 
         }
 
@@ -1677,11 +2274,15 @@
 
             document.getElementById(
                 "documentSelected"
-            ).classList.add("hidden");
+            ).classList.add(
+                "hidden"
+            );
 
             document.getElementById(
                 "documentActions"
-            ).classList.add("hidden");
+            ).classList.add(
+                "hidden"
+            );
 
             resetAnalysisResult();
 
@@ -1694,121 +2295,1183 @@
 
             document.getElementById(
                 "designSelected"
-            ).classList.add("hidden");
+            ).classList.add(
+                "hidden"
+            );
+
+            document.getElementById(
+                "designActions"
+            ).classList.add(
+                "hidden"
+            );
+
+            resetDesignResult();
 
         }
 
     }
 
 
-    function resetAnalysisResult() {
-        const status = document.getElementById("analysisStatus");
-        const result = document.getElementById("analysisResult");
-
-        status.className = "analysis-status hidden";
-        status.textContent = "";
-        result.classList.add("hidden");
-
-        document.getElementById("resultFileName").textContent = "";
-        document.getElementById("resultFileType").textContent = "—";
-        document.getElementById("resultFileSize").textContent = "—";
-        document.getElementById("resultCharacters").textContent = "—";
-        document.getElementById("resultTextPreview").textContent = "";
-    }
+    /* =========================
+       COMMON HELPERS
+    ========================= */
 
 
     function formatFileSize(bytes) {
-        if (bytes < 1024) return `${bytes} B`;
-        if (bytes < 1024 * 1024) {
-            return `${(bytes / 1024).toFixed(1)} KB`;
+
+        if (bytes < 1024) {
+
+            return `${bytes} B`;
+
         }
-        return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+
+        if (bytes < 1024 * 1024) {
+
+            return `${
+                (bytes / 1024).toFixed(1)
+            } KB`;
+
+        }
+
+        return `${
+            (
+                bytes /
+                (1024 * 1024)
+            ).toFixed(2)
+        } MB`;
+
+    }
+
+
+    function escapeHtml(value) {
+
+        return String(
+            value ?? ""
+        )
+            .replaceAll(
+                "&",
+                "&amp;"
+            )
+            .replaceAll(
+                "<",
+                "&lt;"
+            )
+            .replaceAll(
+                ">",
+                "&gt;"
+            )
+            .replaceAll(
+                '"',
+                "&quot;"
+            )
+            .replaceAll(
+                "'",
+                "&#039;"
+            );
+
+    }
+
+
+    /* =========================
+       DOCUMENT RESULT
+    ========================= */
+
+
+    function resetAnalysisResult() {
+
+        const status =
+            document.getElementById(
+                "analysisStatus"
+            );
+
+        const result =
+            document.getElementById(
+                "analysisResult"
+            );
+
+
+        status.className =
+            "analysis-status hidden";
+
+        status.textContent = "";
+
+        result.classList.add(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "resultFileName"
+        ).textContent = "";
+
+        document.getElementById(
+            "resultFileType"
+        ).textContent = "—";
+
+        document.getElementById(
+            "resultFileSize"
+        ).textContent = "—";
+
+        document.getElementById(
+            "resultCharacters"
+        ).textContent = "—";
+
+        document.getElementById(
+            "resultDocumentType"
+        ).textContent =
+            "Document type: —";
+
+        document.getElementById(
+            "resultLanguage"
+        ).textContent =
+            "Language: —";
+
+        document.getElementById(
+            "resultSummary"
+        ).textContent = "—";
+
+        document.getElementById(
+            "legalAnalysisList"
+        ).innerHTML = "";
+
+    }
+
+
+    function renderLegalAnalysis(
+        items
+    ) {
+
+        const container =
+            document.getElementById(
+                "legalAnalysisList"
+            );
+
+        container.innerHTML = "";
+
+
+        if (!items.length) {
+
+            container.innerHTML = `
+                <div class="legal-summary">
+                    No legal comparison
+                    results were returned.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        items.forEach(
+            (item, index) => {
+
+                const point =
+                    item.point || {};
+
+                const comparison =
+                    item.comparison || {};
+
+                const status =
+                    String(
+                        comparison.status ||
+                        "NOT VERIFIED"
+                    ).toUpperCase();
+
+                const badgeClass =
+                    status
+                        .toLowerCase()
+                        .replaceAll(
+                            " ",
+                            "-"
+                        );
+
+                const articles =
+                    Array.isArray(
+                        comparison
+                            .relevant_articles
+                    )
+                        ? comparison
+                            .relevant_articles
+                        : [];
+
+
+                const sourcesHtml =
+                    articles.length
+                        ? articles
+                            .map(
+                                article => {
+
+                                    const sourceUrl =
+                                        String(
+                                            article
+                                                .source_url ||
+                                            ""
+                                        );
+
+                                    const safeUrl =
+                                        sourceUrl
+                                            .startsWith(
+                                                "https://"
+                                            )
+                                            ? escapeHtml(
+                                                sourceUrl
+                                            )
+                                            : "";
+
+
+                                    return `
+                                        <div
+                                            class="legal-source"
+                                        >
+                                            <strong>
+                                                Law ${
+                                                    escapeHtml(
+                                                        article
+                                                            .law_number ||
+                                                        "—"
+                                                    )
+                                                }
+                                                /
+                                                ${
+                                                    escapeHtml(
+                                                        article
+                                                            .year ||
+                                                        "—"
+                                                    )
+                                                }
+                                                —
+                                                Article ${
+                                                    escapeHtml(
+                                                        article
+                                                            .article ||
+                                                        "—"
+                                                    )
+                                                }
+                                            </strong>
+
+                                            <div>
+                                                ${
+                                                    escapeHtml(
+                                                        article
+                                                            .reason ||
+                                                        ""
+                                                    )
+                                                }
+                                            </div>
+
+                                            ${
+                                                safeUrl
+                                                    ? `
+                                                        <a
+                                                            href="${safeUrl}"
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            Official source
+                                                        </a>
+                                                    `
+                                                    : ""
+                                            }
+                                        </div>
+                                    `;
+
+                                }
+                            )
+                            .join("")
+                        : `
+                            <div
+                                class="legal-source"
+                            >
+                                No verified relevant
+                                article was selected
+                                for this point.
+                            </div>
+                        `;
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "legal-point";
+
+
+                card.innerHTML = `
+
+                    <div
+                        class="legal-point-top"
+                    >
+
+                        <h4>
+                            Point ${
+                                escapeHtml(
+                                    point
+                                        .point_number ||
+                                    index + 1
+                                )
+                            }
+                            —
+                            ${
+                                escapeHtml(
+                                    point.title ||
+                                    "Untitled point"
+                                )
+                            }
+                        </h4>
+
+                        <span
+                            class="legal-badge ${badgeClass}"
+                        >
+                            ${
+                                escapeHtml(
+                                    status
+                                )
+                            }
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="legal-field"
+                    >
+
+                        <strong>
+                            Document clause
+                        </strong>
+
+                        ${
+                            escapeHtml(
+                                point
+                                    .original_text ||
+                                "—"
+                            )
+                        }
+
+                    </div>
+
+
+                    <div
+                        class="legal-field"
+                    >
+
+                        <strong>
+                            Analysis
+                        </strong>
+
+                        ${
+                            escapeHtml(
+                                comparison
+                                    .explanation ||
+                                "—"
+                            )
+                        }
+
+                    </div>
+
+
+                    <div
+                        class="legal-field"
+                    >
+
+                        <strong>
+                            Recommendation
+                        </strong>
+
+                        ${
+                            escapeHtml(
+                                comparison
+                                    .recommendation ||
+                                "—"
+                            )
+                        }
+
+                    </div>
+
+
+                    <div
+                        class="legal-field"
+                    >
+
+                        <strong>
+                            Relevant Bahrain
+                            provisions
+                        </strong>
+
+                        ${sourcesHtml}
+
+                    </div>
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
     }
 
 
     async function analyzeDocument() {
-        const file = documentInput.files[0];
+
+        const file =
+            documentInput.files[0];
+
 
         if (!file) {
+
             return;
+
         }
 
-        const button = document.getElementById("analyzeDocumentButton");
-        const status = document.getElementById("analysisStatus");
-        const result = document.getElementById("analysisResult");
 
-        button.disabled = true;
-        button.textContent = "Analyzing...";
-
-        result.classList.add("hidden");
-        status.className = "analysis-status";
-        status.textContent = "Uploading and reading your document...";
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        try {
-            const response = await fetch(
-                "/api/v1/analysis/document",
-                {
-                    method: "POST",
-                    body: formData
-                }
+        const button =
+            document.getElementById(
+                "analyzeDocumentButton"
             );
 
-            const data = await response.json();
+        const status =
+            document.getElementById(
+                "analysisStatus"
+            );
+
+        const result =
+            document.getElementById(
+                "analysisResult"
+            );
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "Analyzing...";
+
+
+        result.classList.add(
+            "hidden"
+        );
+
+        status.className =
+            "analysis-status";
+
+        status.textContent =
+            "Uploading and reading your document...";
+
+
+        const formData =
+            new FormData();
+
+        formData.append(
+            "file",
+            file
+        );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/v1/analysis/document",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
 
             if (!response.ok) {
+
                 throw new Error(
-                    data.detail || "Unable to process the document."
+                    data.detail ||
+                    "Unable to process the document."
                 );
+
             }
 
-            const documentData = data.document;
 
-            status.className = "analysis-status success";
-            status.textContent = "Document processed successfully.";
+            const documentData =
+                data.document;
+
+
+            status.className =
+                "analysis-status success";
+
+            status.textContent =
+                "Document processed successfully.";
+
 
             document.getElementById(
                 "resultFileName"
-            ).textContent = documentData.filename;
+            ).textContent =
+                documentData.filename;
+
 
             document.getElementById(
                 "resultFileType"
-            ).textContent = documentData.file_type.toUpperCase();
+            ).textContent =
+                documentData
+                    .file_type
+                    .toUpperCase();
+
 
             document.getElementById(
                 "resultFileSize"
-            ).textContent = formatFileSize(documentData.file_size);
+            ).textContent =
+                formatFileSize(
+                    documentData.file_size
+                );
+
 
             document.getElementById(
                 "resultCharacters"
-            ).textContent = documentData.characters.toLocaleString();
+            ).textContent =
+                documentData
+                    .characters
+                    .toLocaleString();
 
-            const previewLimit = 2500;
-            const preview =
-                documentData.text.length > previewLimit
-                    ? documentData.text.slice(0, previewLimit) + "\n\n..."
-                    : documentData.text;
+
+            const analysisData =
+                data.analysis || {};
+
+
+            const legalAnalysis =
+                Array.isArray(
+                    data.legal_analysis
+                )
+                    ? data.legal_analysis
+                    : [];
+
 
             document.getElementById(
-                "resultTextPreview"
-            ).textContent = preview;
+                "resultDocumentType"
+            ).textContent =
+                `Document type: ${
+                    analysisData
+                        .document_type ||
+                    "—"
+                }`;
 
-            result.classList.remove("hidden");
+
+            document.getElementById(
+                "resultLanguage"
+            ).textContent =
+                `Language: ${
+                    analysisData.language ||
+                    "—"
+                }`;
+
+
+            document.getElementById(
+                "resultSummary"
+            ).textContent =
+                analysisData.summary ||
+                "No summary available.";
+
+
+            renderLegalAnalysis(
+                legalAnalysis
+            );
+
+
+            result.classList.remove(
+                "hidden"
+            );
+
 
         } catch (error) {
-            status.className = "analysis-status error";
+
+            status.className =
+                "analysis-status error";
+
             status.textContent =
-                error.message || "Something went wrong while processing the document.";
+                error.message ||
+                "Something went wrong while processing the document.";
+
 
         } finally {
+
             button.disabled = false;
-            button.textContent = "Analyze Document";
+
+            button.textContent =
+                "Analyze Document";
+
         }
+
+    }
+
+
+    /* =========================
+       DESIGN REVIEW
+    ========================= */
+
+
+    function resetDesignResult() {
+
+        const status =
+            document.getElementById(
+                "designAnalysisStatus"
+            );
+
+        const result =
+            document.getElementById(
+                "designAnalysisResult"
+            );
+
+
+        status.className =
+            "analysis-status hidden";
+
+        status.textContent = "";
+
+        result.classList.add(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "designResultFileName"
+        ).textContent = "";
+
+        document.getElementById(
+            "designResultFileType"
+        ).textContent = "—";
+
+        document.getElementById(
+            "designResultPages"
+        ).textContent = "—";
+
+        document.getElementById(
+            "designResultRequirements"
+        ).textContent = "—";
+
+        document.getElementById(
+            "designStatusSummary"
+        ).innerHTML = "";
+
+        document.getElementById(
+            "designDetectedElements"
+        ).textContent = "—";
+
+        document.getElementById(
+            "designComplianceList"
+        ).innerHTML = "";
+
+    }
+
+
+    function renderDesignStatusSummary(
+        counts
+    ) {
+
+        const container =
+            document.getElementById(
+                "designStatusSummary"
+            );
+
+
+        const pass =
+            counts["PASS"] || 0;
+
+        const issue =
+            counts["ISSUE"] || 0;
+
+        const warning =
+            counts["WARNING"] || 0;
+
+        const notVerified =
+            counts["NOT VERIFIED"] || 0;
+
+
+        container.innerHTML = `
+
+            <div class="analysis-metadata">
+
+                <div
+                    class="analysis-meta-card"
+                >
+
+                    <small>
+                        PASS
+                    </small>
+
+                    <strong>
+                        ${pass}
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="analysis-meta-card"
+                >
+
+                    <small>
+                        ISSUE
+                    </small>
+
+                    <strong>
+                        ${issue}
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="analysis-meta-card"
+                >
+
+                    <small>
+                        WARNING
+                    </small>
+
+                    <strong>
+                        ${warning}
+                    </strong>
+
+                </div>
+
+
+                <div
+                    class="analysis-meta-card"
+                >
+
+                    <small>
+                        NOT VERIFIED
+                    </small>
+
+                    <strong>
+                        ${notVerified}
+                    </strong>
+
+                </div>
+
+            </div>
+        `;
+
+    }
+
+
+    function renderDesignCompliance(
+        items
+    ) {
+
+        const container =
+            document.getElementById(
+                "designComplianceList"
+            );
+
+        container.innerHTML = "";
+
+
+        if (!items.length) {
+
+            container.innerHTML = `
+                <div class="legal-summary">
+                    No NEA compliance results
+                    were returned.
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        items.forEach(
+            (item, index) => {
+
+                const status =
+                    String(
+                        item.status ||
+                        "NOT VERIFIED"
+                    ).toUpperCase();
+
+
+                const badgeClass =
+                    status
+                        .toLowerCase()
+                        .replaceAll(
+                            " ",
+                            "-"
+                        );
+
+
+                const sourceUrl =
+                    String(
+                        item.source_url ||
+                        ""
+                    );
+
+
+                const safeUrl =
+                    sourceUrl
+                        .startsWith(
+                            "https://"
+                        )
+                        ? escapeHtml(
+                            sourceUrl
+                        )
+                        : "";
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+                card.className =
+                    "legal-point";
+
+
+                card.innerHTML = `
+
+                    <div
+                        class="legal-point-top"
+                    >
+
+                        <h4>
+                            ${
+                                escapeHtml(
+                                    item
+                                        .section_number ||
+                                    index + 1
+                                )
+                            }
+                            —
+                            ${
+                                escapeHtml(
+                                    item.title ||
+                                    "NEA Requirement"
+                                )
+                            }
+                        </h4>
+
+
+                        <span
+                            class="legal-badge ${badgeClass}"
+                        >
+                            ${
+                                escapeHtml(
+                                    status
+                                )
+                            }
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="legal-field"
+                    >
+
+                        <strong>
+                            Observed Evidence
+                        </strong>
+
+                        ${
+                            escapeHtml(
+                                item
+                                    .observed_evidence ||
+                                "No visual evidence provided."
+                            )
+                        }
+
+                    </div>
+
+
+                    <div
+                        class="legal-field"
+                    >
+
+                        <strong>
+                            Analysis
+                        </strong>
+
+                        ${
+                            escapeHtml(
+                                item.analysis ||
+                                "—"
+                            )
+                        }
+
+                    </div>
+
+
+                    <div
+                        class="legal-field"
+                    >
+
+                        <strong>
+                            Recommendation
+                        </strong>
+
+                        ${
+                            escapeHtml(
+                                item
+                                    .recommendation ||
+                                "—"
+                            )
+                        }
+
+                    </div>
+
+
+                    <div
+                        class="legal-field"
+                    >
+
+                        <strong>
+                            Official NEA Source
+                        </strong>
+
+
+                        <div
+                            class="legal-source"
+                        >
+
+                            ${
+                                safeUrl
+                                    ? `
+                                        <a
+                                            href="${safeUrl}"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Open official source
+                                        </a>
+                                    `
+                                    : `
+                                        No official source
+                                        URL was returned.
+                                    `
+                            }
+
+                        </div>
+
+                    </div>
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+            }
+        );
+
+    }
+
+
+    async function analyzeDesign() {
+
+        const file =
+            designInput.files[0];
+
+
+        if (!file) {
+
+            return;
+
+        }
+
+
+        const button =
+            document.getElementById(
+                "analyzeDesignButton"
+            );
+
+        const status =
+            document.getElementById(
+                "designAnalysisStatus"
+            );
+
+        const result =
+            document.getElementById(
+                "designAnalysisResult"
+            );
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "Analyzing...";
+
+
+        result.classList.add(
+            "hidden"
+        );
+
+
+        status.className =
+            "analysis-status";
+
+        status.textContent =
+            "Uploading and reviewing your design...";
+
+
+        const formData =
+            new FormData();
+
+
+        formData.append(
+            "file",
+            file
+        );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/v1/design/analyze",
+                    {
+                        method: "POST",
+                        body: formData
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "Unable to analyze the design."
+                );
+
+            }
+
+
+            const designData =
+                data.design || {};
+
+
+            const vision =
+                data.vision_analysis || {};
+
+
+            const report =
+                data.compliance_report || {};
+
+
+            const counts =
+                report.status_counts || {};
+
+
+            const results =
+                Array.isArray(
+                    report.results
+                )
+                    ? report.results
+                    : [];
+
+
+            const detected =
+                Array.isArray(
+                    vision.detected_elements
+                )
+                    ? vision.detected_elements
+                    : [];
+
+
+            status.className =
+                "analysis-status success";
+
+
+            status.textContent =
+                "Design review completed successfully.";
+
+
+            document.getElementById(
+                "designResultFileName"
+            ).textContent =
+                designData.filename ||
+                file.name;
+
+
+            document.getElementById(
+                "designResultFileType"
+            ).textContent =
+                String(
+                    designData.file_type ||
+                    "—"
+                ).toUpperCase();
+
+
+            document.getElementById(
+                "designResultPages"
+            ).textContent =
+                designData.page_count ??
+                "—";
+
+
+            document.getElementById(
+                "designResultRequirements"
+            ).textContent =
+                data
+                    .nea_requirements_count ??
+                0;
+
+
+            document.getElementById(
+                "designDetectedElements"
+            ).textContent =
+                detected.length
+                    ? detected.join(", ")
+                    : "No visible elements detected.";
+
+
+            renderDesignStatusSummary(
+                counts
+            );
+
+
+            renderDesignCompliance(
+                results
+            );
+
+
+            result.classList.remove(
+                "hidden"
+            );
+
+
+        } catch (error) {
+
+            status.className =
+                "analysis-status error";
+
+
+            status.textContent =
+                error.message ||
+                "Something went wrong while reviewing the design.";
+
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Analyze Design";
+
+        }
+
     }
 
 </script>
 
 </body>
+
 </html>
