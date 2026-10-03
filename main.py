@@ -6,6 +6,7 @@ from fastapi.templating import Jinja2Templates
 from api.v1 import upload
 from api.v1 import analysis
 from api.v1 import design_analysis
+from api.v1 import draft
 
 from core.config import settings
 
@@ -40,6 +41,11 @@ def create_application() -> FastAPI:
     # Design analysis endpoint
     application.include_router(
         design_analysis.router
+    )
+
+    # Draft creation endpoint
+    application.include_router(
+        draft.router
     )
 
     return application

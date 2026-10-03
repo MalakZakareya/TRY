@@ -1135,7 +1135,106 @@
         .draft-option strong {
             font-size: 16px;
         }
+                /* =========================
+           CREATE DRAFT FORM
+        ========================= */
 
+        #draftFormContainer {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.04),
+                    rgba(255,255,255,0.015)
+                );
+        }
+
+        #draftFields label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #d1d5db;
+
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        #draftFields input,
+        #draftFields textarea {
+            width: 100%;
+
+            padding: 14px 15px;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 12px;
+
+            background: #0c0e12;
+
+            color: white;
+
+            font: inherit;
+
+            outline: none;
+
+            transition:
+                border-color 0.2s ease,
+                box-shadow 0.2s ease,
+                background 0.2s ease;
+        }
+
+        #draftFields textarea {
+            min-height: 120px;
+
+            resize: vertical;
+
+            line-height: 1.6;
+        }
+
+        #draftFields input::placeholder,
+        #draftFields textarea::placeholder {
+            color: #626773;
+        }
+
+        #draftFields input:focus,
+        #draftFields textarea:focus {
+            border-color:
+                var(--purple-light);
+
+            background:
+                rgba(139,92,246,0.04);
+
+            box-shadow:
+                0 0 0 3px
+                rgba(139,92,246,0.10);
+        }
+
+        #draftFields input[type="date"] {
+            color-scheme: dark;
+        }
+
+        #draftResult {
+            margin-top: 22px;
+        }
+
+        #generatedDraftText {
+            color: #e5e7eb;
+        }
+
+        #generatedDraftNotes {
+            color: #d1d5db;
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+        #generatedDraftSources
+        .legal-source:first-child {
+            margin-top: 0;
+        }
+          
 
         /* =========================
            FOOTER
@@ -1950,7 +2049,7 @@
         </div>
 
 
-        <!-- DRAFT -->
+               <!-- DRAFT -->
 
         <div
             id="draftPanel"
@@ -1964,104 +2063,290 @@
                 </div>
 
                 <h2>
-                    What would you
-                    like to create?
+                    Create your
+                    <br>
+                    document.
                 </h2>
 
                 <p>
-                    Choose the document you need.
-                    In the next phase, the AI will
-                    ask you for missing information,
-                    retrieve relevant requirements,
-                    and generate the draft.
+                    Choose the type of document you need,
+                    enter the required information, and
+                    generate a professional draft using
+                    relevant Bahrain legal requirements
+                    retrieved from the knowledge base.
                 </p>
 
             </div>
 
 
-            <div class="draft-options">
+            <div>
 
-                <button class="draft-option">
+                <!-- DRAFT TYPE OPTIONS -->
 
-                    <small>
-                        01
-                    </small>
+                <div
+                    id="draftOptions"
+                    class="draft-options"
+                >
 
-                    <strong>
-                        Employment Contract
-                    </strong>
+                    <button
+                        class="draft-option"
+                        type="button"
+                        onclick="selectDraftType('employment_contract')"
+                    >
 
-                </button>
+                        <small>
+                            01
+                        </small>
 
+                        <strong>
+                            Employment Contract
+                        </strong>
 
-                <button class="draft-option">
-
-                    <small>
-                        02
-                    </small>
-
-                    <strong>
-                        Offer Letter
-                    </strong>
-
-                </button>
+                    </button>
 
 
-                <button class="draft-option">
+                    <button
+                        class="draft-option"
+                        type="button"
+                        onclick="selectDraftType('offer_letter')"
+                    >
 
-                    <small>
-                        03
-                    </small>
+                        <small>
+                            02
+                        </small>
 
-                    <strong>
-                        NDA
-                    </strong>
+                        <strong>
+                            Offer Letter
+                        </strong>
 
-                </button>
-
-
-                <button class="draft-option">
-
-                    <small>
-                        04
-                    </small>
-
-                    <strong>
-                        Service Agreement
-                    </strong>
-
-                </button>
+                    </button>
 
 
-                <button class="draft-option">
+                    <button
+                        class="draft-option"
+                        type="button"
+                        onclick="selectDraftType('nda')"
+                    >
 
-                    <small>
-                        05
-                    </small>
+                        <small>
+                            03
+                        </small>
 
-                    <strong>
-                        Warning Letter
-                    </strong>
+                        <strong>
+                            NDA
+                        </strong>
 
-                </button>
+                    </button>
 
 
-                <button class="draft-option">
+                    <button
+                        class="draft-option"
+                        type="button"
+                        onclick="selectDraftType('service_agreement')"
+                    >
 
-                    <small>
-                        06
-                    </small>
+                        <small>
+                            04
+                        </small>
 
-                    <strong>
-                        Custom Document
-                    </strong>
+                        <strong>
+                            Service Agreement
+                        </strong>
 
-                </button>
+                    </button>
+
+
+                    <button
+                        class="draft-option"
+                        type="button"
+                        onclick="selectDraftType('warning_letter')"
+                    >
+
+                        <small>
+                            05
+                        </small>
+
+                        <strong>
+                            Warning Letter
+                        </strong>
+
+                    </button>
+
+
+                    <button
+                        class="draft-option"
+                        type="button"
+                        onclick="selectDraftType('custom')"
+                    >
+
+                        <small>
+                            06
+                        </small>
+
+                        <strong>
+                            Custom Document
+                        </strong>
+
+                    </button>
+
+                </div>
+
+
+                <!-- DRAFT FORM -->
+
+                <div
+                    id="draftFormContainer"
+                    class="analysis-result hidden"
+                >
+
+                    <div class="analysis-result-header">
+
+                        <strong id="draftFormTitle">
+                            Create Draft
+                        </strong>
+
+                        <span>
+                            Complete the information below.
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="draftFields"
+                        style="padding: 18px;"
+                    ></div>
+
+
+                    <div
+                        style="
+                            padding: 0 18px 18px;
+                            display: flex;
+                            gap: 12px;
+                        "
+                    >
+
+                        <button
+                            class="remove-button"
+                            type="button"
+                            onclick="cancelDraftSelection()"
+                        >
+                            ← Change type
+                        </button>
+
+                        <button
+                            id="generateDraftButton"
+                            class="analyze-button"
+                            type="button"
+                            onclick="createDraft()"
+                        >
+                            Generate Draft
+                        </button>
+
+                    </div>
+
+
+                    <div
+                        id="draftStatus"
+                        class="analysis-status hidden"
+                        style="
+                            margin: 0 18px 18px;
+                            width: auto;
+                        "
+                    ></div>
+
+                </div>
+
+
+                <!-- GENERATED DRAFT RESULT -->
+
+                <div
+                    id="draftResult"
+                    class="analysis-result hidden"
+                >
+
+                    <div class="analysis-result-header">
+
+                        <strong id="generatedDraftTitle">
+                            Generated Draft
+                        </strong>
+
+                        <span>
+                            AI-generated document draft
+                        </span>
+
+                    </div>
+
+
+                    <div class="legal-report">
+
+                        <div class="legal-summary">
+
+                            <small>
+                                Draft
+                            </small>
+
+                            <div
+                                id="generatedDraftText"
+                                style="
+                                    white-space: pre-wrap;
+                                    line-height: 1.8;
+                                "
+                            >
+                            </div>
+
+                        </div>
+
+
+                        <div
+                            id="draftNotesContainer"
+                            class="legal-summary hidden"
+                        >
+
+                            <small>
+                                Notes
+                            </small>
+
+                            <div id="generatedDraftNotes"></div>
+
+                        </div>
+
+
+                        <div
+                            id="draftSourcesContainer"
+                            class="legal-summary hidden"
+                        >
+
+                            <small>
+                                Verified Bahrain sources used
+                            </small>
+
+                            <div id="generatedDraftSources"></div>
+
+                        </div>
+
+
+                        <div
+                            class="analysis-actions"
+                        >
+
+                            <button
+                                class="choose-button"
+                                type="button"
+                                onclick="copyGeneratedDraft()"
+                            >
+                                Copy Draft
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
-
     </section>
 
 
@@ -3470,6 +3755,882 @@
 
     }
 
+    /* =========================
+       CREATE DRAFT
+    ========================= */
+
+    let selectedDraftType = null;
+
+
+    const draftConfigurations = {
+
+        employment_contract: {
+            title: "Employment Contract",
+            fields: [
+                {
+                    name: "employer_name",
+                    label: "Employer Name",
+                    type: "text"
+                },
+                {
+                    name: "employee_name",
+                    label: "Employee Name",
+                    type: "text"
+                },
+                {
+                    name: "job_title",
+                    label: "Job Title",
+                    type: "text"
+                },
+                {
+                    name: "salary",
+                    label: "Salary",
+                    type: "text"
+                },
+                {
+                    name: "start_date",
+                    label: "Start Date",
+                    type: "date"
+                },
+                {
+                    name: "contract_duration",
+                    label: "Contract Duration",
+                    type: "text"
+                }
+            ]
+        },
+
+
+        offer_letter: {
+            title: "Offer Letter",
+            fields: [
+                {
+                    name: "employer_name",
+                    label: "Employer Name",
+                    type: "text"
+                },
+                {
+                    name: "employee_name",
+                    label: "Employee Name",
+                    type: "text"
+                },
+                {
+                    name: "job_title",
+                    label: "Job Title",
+                    type: "text"
+                },
+                {
+                    name: "salary",
+                    label: "Salary",
+                    type: "text"
+                },
+                {
+                    name: "start_date",
+                    label: "Start Date",
+                    type: "date"
+                }
+            ]
+        },
+
+
+        nda: {
+            title: "Non-Disclosure Agreement",
+            fields: [
+                {
+                    name: "first_party",
+                    label: "First Party",
+                    type: "text"
+                },
+                {
+                    name: "second_party",
+                    label: "Second Party",
+                    type: "text"
+                },
+                {
+                    name: "purpose",
+                    label: "Purpose",
+                    type: "textarea"
+                },
+                {
+                    name: "effective_date",
+                    label: "Effective Date",
+                    type: "date"
+                }
+            ]
+        },
+
+
+        service_agreement: {
+            title: "Service Agreement",
+            fields: [
+                {
+                    name: "first_party",
+                    label: "First Party",
+                    type: "text"
+                },
+                {
+                    name: "second_party",
+                    label: "Second Party",
+                    type: "text"
+                },
+                {
+                    name: "service_description",
+                    label: "Service Description",
+                    type: "textarea"
+                },
+                {
+                    name: "payment_terms",
+                    label: "Payment Terms",
+                    type: "textarea"
+                },
+                {
+                    name: "start_date",
+                    label: "Start Date",
+                    type: "date"
+                }
+            ]
+        },
+
+
+        warning_letter: {
+            title: "Warning Letter",
+            fields: [
+                {
+                    name: "employer_name",
+                    label: "Employer Name",
+                    type: "text"
+                },
+                {
+                    name: "employee_name",
+                    label: "Employee Name",
+                    type: "text"
+                },
+                {
+                    name: "job_title",
+                    label: "Job Title",
+                    type: "text"
+                },
+                {
+                    name: "warning_reason",
+                    label: "Warning Reason",
+                    type: "textarea"
+                },
+                {
+                    name: "warning_date",
+                    label: "Warning Date",
+                    type: "date"
+                }
+            ]
+        },
+
+
+        custom: {
+            title: "Custom Document",
+            fields: [
+                {
+                    name: "document_title",
+                    label: "Document Title",
+                    type: "text"
+                },
+                {
+                    name: "instructions",
+                    label: "Instructions",
+                    type: "textarea"
+                }
+            ]
+        }
+
+    };
+
+
+    function selectDraftType(type) {
+
+        const config =
+            draftConfigurations[type];
+
+        if (!config) {
+            return;
+        }
+
+
+        selectedDraftType = type;
+
+
+        const options =
+            document.getElementById(
+                "draftOptions"
+            );
+
+        const form =
+            document.getElementById(
+                "draftFormContainer"
+            );
+
+        const fieldsContainer =
+            document.getElementById(
+                "draftFields"
+            );
+
+        const title =
+            document.getElementById(
+                "draftFormTitle"
+            );
+
+
+        options.classList.add(
+            "hidden"
+        );
+
+        form.classList.remove(
+            "hidden"
+        );
+
+
+        title.textContent =
+            config.title;
+
+
+        fieldsContainer.innerHTML = "";
+
+
+        config.fields.forEach(
+            field => {
+
+                const wrapper =
+                    document.createElement(
+                        "div"
+                    );
+
+                wrapper.style.marginBottom =
+                    "16px";
+
+
+                const label =
+                    document.createElement(
+                        "label"
+                    );
+
+                label.textContent =
+                    field.label;
+
+                label.style.display =
+                    "block";
+
+                label.style.marginBottom =
+                    "7px";
+
+                label.style.fontSize =
+                    "13px";
+
+                label.style.fontWeight =
+                    "600";
+
+                label.style.color =
+                    "#d1d5db";
+
+
+                let input;
+
+
+                if (
+                    field.type ===
+                    "textarea"
+                ) {
+
+                    input =
+                        document.createElement(
+                            "textarea"
+                        );
+
+                    input.rows = 5;
+
+                    input.style.resize =
+                        "vertical";
+
+                } else {
+
+                    input =
+                        document.createElement(
+                            "input"
+                        );
+
+                    input.type =
+                        field.type;
+
+                }
+
+
+                input.id =
+                    `draft_${field.name}`;
+
+                input.dataset.field =
+                    field.name;
+
+                input.placeholder =
+                    `Enter ${field.label.toLowerCase()}`;
+
+                input.style.width =
+                    "100%";
+
+                input.style.padding =
+                    "13px 14px";
+
+                input.style.borderRadius =
+                    "11px";
+
+                input.style.border =
+                    "1px solid rgba(255,255,255,0.09)";
+
+                input.style.background =
+                    "#0c0e12";
+
+                input.style.color =
+                    "white";
+
+                input.style.font =
+                    "inherit";
+
+                input.style.outline =
+                    "none";
+
+
+                wrapper.appendChild(
+                    label
+                );
+
+                wrapper.appendChild(
+                    input
+                );
+
+                fieldsContainer.appendChild(
+                    wrapper
+                );
+
+            }
+        );
+
+
+        resetDraftResult();
+
+    }
+
+
+    function cancelDraftSelection() {
+
+        selectedDraftType = null;
+
+
+        document.getElementById(
+            "draftFormContainer"
+        ).classList.add(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "draftOptions"
+        ).classList.remove(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "draftFields"
+        ).innerHTML = "";
+
+
+        resetDraftResult();
+
+    }
+
+
+    function resetDraftResult() {
+
+        const status =
+            document.getElementById(
+                "draftStatus"
+            );
+
+        const result =
+            document.getElementById(
+                "draftResult"
+            );
+
+
+        status.className =
+            "analysis-status hidden";
+
+        status.textContent = "";
+
+
+        result.classList.add(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "generatedDraftTitle"
+        ).textContent =
+            "Generated Draft";
+
+
+        document.getElementById(
+            "generatedDraftText"
+        ).textContent = "";
+
+
+        document.getElementById(
+            "generatedDraftNotes"
+        ).innerHTML = "";
+
+
+        document.getElementById(
+            "generatedDraftSources"
+        ).innerHTML = "";
+
+
+        document.getElementById(
+            "draftNotesContainer"
+        ).classList.add(
+            "hidden"
+        );
+
+
+        document.getElementById(
+            "draftSourcesContainer"
+        ).classList.add(
+            "hidden"
+        );
+
+    }
+        async function createDraft() {
+
+        if (!selectedDraftType) {
+            return;
+        }
+
+
+        const config =
+            draftConfigurations[
+                selectedDraftType
+            ];
+
+        const details = {};
+
+        let missingField = null;
+
+
+        config.fields.forEach(
+            field => {
+
+                const input =
+                    document.getElementById(
+                        `draft_${field.name}`
+                    );
+
+                const value =
+                    input.value.trim();
+
+                details[field.name] =
+                    value;
+
+
+                if (
+                    !value &&
+                    !missingField
+                ) {
+                    missingField =
+                        field.label;
+                }
+
+            }
+        );
+
+
+        const status =
+            document.getElementById(
+                "draftStatus"
+            );
+
+        const result =
+            document.getElementById(
+                "draftResult"
+            );
+
+        const button =
+            document.getElementById(
+                "generateDraftButton"
+            );
+
+
+        if (missingField) {
+
+            status.className =
+                "analysis-status error";
+
+            status.textContent =
+                `Please complete: ${missingField}`;
+
+            return;
+
+        }
+
+
+        status.className =
+            "analysis-status";
+
+        status.textContent =
+            "Creating your draft...";
+
+
+        result.classList.add(
+            "hidden"
+        );
+
+
+        button.disabled = true;
+
+        button.textContent =
+            "Generating...";
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/v1/draft/create",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body: JSON.stringify({
+                            draft_type:
+                                selectedDraftType,
+
+                            details:
+                                details
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    data.detail ||
+                    "Unable to create the draft."
+                );
+
+            }
+
+
+            const draftData =
+                data.result || {};
+
+
+            document.getElementById(
+                "generatedDraftTitle"
+            ).textContent =
+                draftData.title ||
+                "Generated Draft";
+
+
+            document.getElementById(
+                "generatedDraftText"
+            ).textContent =
+                draftData.draft ||
+                "No draft content was returned.";
+
+
+            renderDraftNotes(
+                draftData.notes || []
+            );
+
+
+            renderDraftSources(
+                draftData
+                    .verified_sources || []
+            );
+
+
+            status.className =
+                "analysis-status success";
+
+            status.textContent =
+                "Draft created successfully.";
+
+
+            result.classList.remove(
+                "hidden"
+            );
+
+
+            result.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+
+
+        } catch (error) {
+
+            status.className =
+                "analysis-status error";
+
+            status.textContent =
+                error.message ||
+                "Something went wrong while creating the draft.";
+
+
+        } finally {
+
+            button.disabled = false;
+
+            button.textContent =
+                "Generate Draft";
+
+        }
+
+    }
+
+
+    function renderDraftNotes(notes) {
+
+        const container =
+            document.getElementById(
+                "draftNotesContainer"
+            );
+
+        const content =
+            document.getElementById(
+                "generatedDraftNotes"
+            );
+
+
+        content.innerHTML = "";
+
+
+        if (
+            !Array.isArray(notes) ||
+            !notes.length
+        ) {
+
+            container.classList.add(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        notes.forEach(
+            note => {
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+                item.textContent =
+                    `• ${note}`;
+
+                item.style.marginBottom =
+                    "8px";
+
+                content.appendChild(
+                    item
+                );
+
+            }
+        );
+
+
+        container.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    function renderDraftSources(
+        sources
+    ) {
+
+        const container =
+            document.getElementById(
+                "draftSourcesContainer"
+            );
+
+        const content =
+            document.getElementById(
+                "generatedDraftSources"
+            );
+
+
+        content.innerHTML = "";
+
+
+        if (
+            !Array.isArray(sources) ||
+            !sources.length
+        ) {
+
+            container.classList.add(
+                "hidden"
+            );
+
+            return;
+
+        }
+
+
+        sources.forEach(
+            source => {
+
+                const sourceCard =
+                    document.createElement(
+                        "div"
+                    );
+
+                sourceCard.className =
+                    "legal-source";
+
+
+                const lawId =
+                    source.law_id ||
+                    "Bahrain regulation";
+
+                const article =
+                    source.article_number ||
+                    "—";
+
+                const title =
+                    source.title ||
+                    "";
+
+
+                const heading =
+                    document.createElement(
+                        "strong"
+                    );
+
+                heading.textContent =
+                    `${lawId} — Article ${article}`;
+
+
+                sourceCard.appendChild(
+                    heading
+                );
+
+
+                if (title) {
+
+                    const titleElement =
+                        document.createElement(
+                            "div"
+                        );
+
+                    titleElement.textContent =
+                        title;
+
+                    sourceCard.appendChild(
+                        titleElement
+                    );
+
+                }
+
+
+                const sourceUrl =
+                    source.source_url ||
+                    source.url ||
+                    "";
+
+
+                if (
+                    typeof sourceUrl ===
+                        "string" &&
+                    sourceUrl.startsWith(
+                        "https://"
+                    )
+                ) {
+
+                    const link =
+                        document.createElement(
+                            "a"
+                        );
+
+                    link.href =
+                        sourceUrl;
+
+                    link.target =
+                        "_blank";
+
+                    link.rel =
+                        "noopener noreferrer";
+
+                    link.textContent =
+                        "Official source";
+
+
+                    sourceCard.appendChild(
+                        link
+                    );
+
+                }
+
+
+                content.appendChild(
+                    sourceCard
+                );
+
+            }
+        );
+
+
+        container.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    async function copyGeneratedDraft() {
+
+        const draftText =
+            document.getElementById(
+                "generatedDraftText"
+            ).textContent;
+
+
+        if (!draftText.trim()) {
+            return;
+        }
+
+
+        try {
+
+            await navigator.clipboard.writeText(
+                draftText
+            );
+
+        } catch (error) {
+
+            console.error(
+                "Could not copy draft:",
+                error
+            );
+
+        }
+
+    }
 </script>
 
 </body>
