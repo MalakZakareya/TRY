@@ -46,6 +46,81 @@ def clean_json_response(
     return cleaned.strip()
 
 
+def get_test_design_analysis(
+    page_count: int,
+) -> dict[str, Any]:
+    """
+    Return mock visual observations when TEST_MODE
+    is enabled.
+
+    No OpenAI API request is made.
+    """
+
+    observations: list[dict[str, Any]] = [
+        {
+            "element": "logo",
+            "observation": (
+                "A logo is visible in the header area."
+            ),
+            "page": 1,
+        },
+        {
+            "element": "navigation",
+            "observation": (
+                "A primary navigation area is visible."
+            ),
+            "page": 1,
+        },
+        {
+            "element": "colors",
+            "observation": (
+                "The interface uses a consistent "
+                "visual color scheme."
+            ),
+            "page": 1,
+        },
+        {
+            "element": "color contrast",
+            "observation": (
+                "Text and interface elements use "
+                "visually distinguishable colors."
+            ),
+            "page": 1,
+        },
+        {
+            "element": "links",
+            "observation": (
+                "Link-style interface elements "
+                "are visible."
+            ),
+            "page": 1,
+        },
+    ]
+
+    if page_count > 1:
+        observations.append(
+            {
+                "element": "text",
+                "observation": (
+                    f"The uploaded design contains "
+                    f"{page_count} prepared pages."
+                ),
+                "page": 2,
+            }
+        )
+
+    return {
+        "detected_elements": [
+            "logo",
+            "navigation",
+            "colors",
+            "color contrast",
+            "links",
+        ],
+        "observations": observations,
+    }
+
+
 def analyze_design_images(
     design_images: list[bytes],
 ) -> dict[str, Any]:
@@ -53,6 +128,18 @@ def analyze_design_images(
         raise DesignVisionError(
             "No design images were provided."
         )
+
+    # ---------------------------------------------------------
+    # TEST MODE
+    # ---------------------------------------------------------
+    if settings.TEST_MODE:
+        return get_test_design_analysis(
+            page_count=len(design_images)
+        )
+
+    # ---------------------------------------------------------
+    # REAL OPENAI VISION MODE
+    # ---------------------------------------------------------
 
     prompt = """
 You are analyzing website or mobile application

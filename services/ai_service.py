@@ -9,17 +9,109 @@ from core.config import settings
 client = OpenAI(api_key=settings.OPENAI_API_KEY)
 
 
+def get_test_analysis() -> dict[str, Any]:
+    """
+    Return a mock AI result when TEST_MODE is enabled.
+
+    This allows the full document-analysis workflow
+    to be tested without using OpenAI credits.
+    """
+
+    return {
+        "document_type": "Employment Contract",
+        "language": "English",
+        "summary": (
+            "This is a test-mode document analysis result. "
+            "The system successfully received and processed "
+            "the uploaded document without calling OpenAI."
+        ),
+        "points": [
+            {
+                "point_number": 1,
+                "title": "Employment Relationship",
+                "category": "Employment",
+                "original_text": (
+                    "Test mode: employment relationship clause."
+                ),
+                "explanation": (
+                    "This mock point confirms that the "
+                    "document analysis workflow is working."
+                ),
+            },
+            {
+                "point_number": 2,
+                "title": "Salary",
+                "category": "Compensation",
+                "original_text": (
+                    "Test mode: salary clause."
+                ),
+                "explanation": (
+                    "This mock point represents a salary "
+                    "or compensation provision."
+                ),
+            },
+            {
+                "point_number": 3,
+                "title": "Working Hours",
+                "category": "Working Hours",
+                "original_text": (
+                    "Test mode: working hours clause."
+                ),
+                "explanation": (
+                    "This mock point represents working "
+                    "hours stated in the document."
+                ),
+            },
+            {
+                "point_number": 4,
+                "title": "Annual Leave",
+                "category": "Leave",
+                "original_text": (
+                    "Test mode: annual leave clause."
+                ),
+                "explanation": (
+                    "This mock point represents an annual "
+                    "leave provision."
+                ),
+            },
+            {
+                "point_number": 5,
+                "title": "Termination",
+                "category": "Termination",
+                "original_text": (
+                    "Test mode: termination clause."
+                ),
+                "explanation": (
+                    "This mock point represents a "
+                    "termination provision."
+                ),
+            },
+        ],
+    }
+
+
 def analyze_document_text(document_text: str) -> dict[str, Any]:
     """
     Read the extracted document text and identify its important
     clauses, requirements, obligations, rights, dates, amounts,
     conditions, and other meaningful points.
 
-    This step does NOT perform Bahrain legal compliance checking yet.
+    When TEST_MODE is enabled, a mock AI result is returned
+    without making an OpenAI API request.
     """
 
     if not document_text.strip():
         raise ValueError("Document text is empty.")
+
+    # ---------------------------------------------------------
+    # TEST MODE
+    # ---------------------------------------------------------
+    if settings.TEST_MODE:
+        return get_test_analysis()
+
+    # ---------------------------------------------------------
+    # REAL OPENAI MODE
+    # ---------------------------------------------------------
 
     prompt = f"""
 You are a careful professional document analysis assistant.

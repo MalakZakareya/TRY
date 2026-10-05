@@ -278,6 +278,10 @@ def split_articles(
     مادة (1)
     مادة (2)
     مادة (2) مكرراً
+
+    Structural headings that appear between
+    articles, such as الباب and الفصل, are
+    excluded from the previous article text.
     """
 
     pattern = re.compile(
@@ -321,6 +325,47 @@ def split_articles(
         article_text = text[
             start:end
         ].strip()
+
+        # -----------------------------------------
+        # Remove structural headings that belong
+        # to the NEXT chapter/section rather than
+        # to the current article.
+        #
+        # Examples:
+        #
+        # الباب السابع
+        # ساعات العمل وفترات الراحة
+        #
+        # الفصل الأول
+        # أحكام عامة
+        # -----------------------------------------
+
+        article_lines = [
+            line.strip()
+            for line in article_text.splitlines()
+            if line.strip()
+        ]
+
+        heading_index: int | None = None
+
+        for line_index, line in enumerate(
+            article_lines
+        ):
+            if re.match(
+                r"^(?:الباب|الفصل)\s+",
+                line,
+            ):
+                heading_index = line_index
+                break
+
+        if heading_index is not None:
+            article_lines = article_lines[
+                :heading_index
+            ]
+
+        article_text = "\n".join(
+            article_lines
+        ).strip()
 
         if not article_text:
             continue

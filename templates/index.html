@@ -75,7 +75,7 @@
         }
 
         .page {
-            width: min(1180px, 92%);
+            width: min(1540px, 94%);
             margin: auto;
         }
 
@@ -475,9 +475,9 @@
             display: grid;
 
             grid-template-columns:
-                0.8fr 1.2fr;
+                minmax(230px, 0.34fr) minmax(0, 1.66fr);
 
-            gap: 70px;
+            gap: 42px;
 
             align-items: start;
         }
@@ -1081,7 +1081,7 @@
             display: grid;
 
             grid-template-columns:
-                repeat(2, 1fr);
+                repeat(3, minmax(0, 1fr));
 
             gap: 14px;
         }
@@ -1237,6 +1237,44 @@
           
 
         /* =========================
+           WIDE WORKSPACE RESULTS
+        ========================= */
+
+        #legalAnalysisList,
+        #designComplianceList {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            align-items: start;
+        }
+
+        #legalAnalysisList .legal-point,
+        #designComplianceList .legal-point {
+            margin-top: 0;
+            height: 100%;
+        }
+
+        .draft-fields-padding {
+            padding: 18px;
+        }
+
+        .draft-form-actions {
+            padding: 0 18px 18px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .draft-status-spaced {
+            margin: 0 18px 18px;
+            width: auto;
+        }
+
+        .generated-draft-text {
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+
+        /* =========================
            FOOTER
         ========================= */
 
@@ -1264,6 +1302,19 @@
         /* =========================
            RESPONSIVE
         ========================= */
+
+
+        @media(max-width: 1100px) {
+
+            #legalAnalysisList,
+            #designComplianceList {
+                grid-template-columns: 1fr;
+            }
+
+            .draft-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
 
         @media(max-width: 900px) {
 
@@ -2214,17 +2265,11 @@
 
                     <div
                         id="draftFields"
-                        style="padding: 18px;"
+                        class="draft-fields-padding"
                     ></div>
 
 
-                    <div
-                        style="
-                            padding: 0 18px 18px;
-                            display: flex;
-                            gap: 12px;
-                        "
-                    >
+                    <div class="draft-form-actions">
 
                         <button
                             class="remove-button"
@@ -2248,11 +2293,7 @@
 
                     <div
                         id="draftStatus"
-                        class="analysis-status hidden"
-                        style="
-                            margin: 0 18px 18px;
-                            width: auto;
-                        "
+                        class="analysis-status draft-status-spaced hidden"
                     ></div>
 
                 </div>
@@ -2288,10 +2329,7 @@
 
                             <div
                                 id="generatedDraftText"
-                                style="
-                                    white-space: pre-wrap;
-                                    line-height: 1.8;
-                                "
+                                class="generated-draft-text"
                             >
                             </div>
 
@@ -2331,12 +2369,21 @@
                         >
 
                             <button
-                                class="choose-button"
-                                type="button"
-                                onclick="copyGeneratedDraft()"
-                            >
-                                Copy Draft
-                            </button>
+    class="choose-button"
+    type="button"
+    onclick="copyGeneratedDraft()"
+>
+    Copy Draft
+</button>
+
+<button
+    id="downloadDraftWordButton"
+    class="analyze-button"
+    type="button"
+    onclick="downloadGeneratedDraftWord()"
+>
+    Download Word
+</button>
 
                         </div>
 
@@ -3759,7 +3806,7 @@
        CREATE DRAFT
     ========================= */
 
-    let selectedDraftType = null;
+    let selectedDraftType = null; let generatedDraftVerifiedSources = [];
 
 
     const draftConfigurations = {
@@ -4334,6 +4381,12 @@
 
             const draftData =
                 data.result || {};
+                generatedDraftVerifiedSources =
+    Array.isArray(
+        draftData.verified_sources
+    )
+        ? draftData.verified_sources
+        : [];
 
 
             document.getElementById(
@@ -4631,8 +4684,179 @@
         }
 
     }
+    async function downloadGeneratedDraftWord() {
+
+    const button =
+        document.getElementById(
+            "downloadDraftWordButton"
+        );
+
+    const title =
+        document.getElementById(
+            "generatedDraftTitle"
+        ).textContent.trim();
+
+    const draft =
+        document.getElementById(
+            "generatedDraftText"
+        ).textContent.trim();
+
+    const verifiedSources =
+        generatedDraftVerifiedSources;
+
+    if (!draft) {
+        alert(
+            "Please generate a draft first."
+        );
+        return;
+    }
+
+
+    const payload = {
+        title:
+            title || "Legal Draft",
+
+        draft:
+            draft,
+
+        draft_type_name:
+            selectedDraftType
+                ? draftConfigurations[
+                    selectedDraftType
+                ].title
+                : "Legal Draft",
+
+        verified_sources:
+            verifiedSources
+    };
+
+
+    try {
+
+        button.disabled = true;
+
+        button.textContent =
+            "Preparing Word...";
+
+
+        const response =
+            await fetch(
+                "/api/v1/draft/download/word",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body:
+                        JSON.stringify(
+                            payload
+                        )
+                }
+            );
+
+
+        if (!response.ok) {
+
+            let message =
+                "Unable to download the Word document.";
+
+            try {
+
+                const errorData =
+                    await response.json();
+
+                message =
+                    errorData.detail ||
+                    message;
+
+            } catch (error) {
+                // Keep the default message.
+            }
+
+            throw new Error(message);
+
+        }
+
+
+        const blob =
+            await response.blob();
+
+
+        const contentDisposition =
+            response.headers.get(
+                "content-disposition"
+            ) || "";
+
+
+        let filename =
+            "Legal_Draft.docx";
+
+
+        const filenameMatch =
+            contentDisposition.match(
+                /filename="?([^"]+)"?/i
+            );
+
+
+        if (
+            filenameMatch &&
+            filenameMatch[1]
+        ) {
+            filename =
+                filenameMatch[1];
+        }
+
+
+        const downloadUrl =
+            window.URL.createObjectURL(
+                blob
+            );
+
+
+        const link =
+            document.createElement("a");
+
+        link.href =
+            downloadUrl;
+
+        link.download =
+            filename;
+
+        document.body.appendChild(
+            link
+        );
+
+        link.click();
+
+        link.remove();
+
+
+        window.URL.revokeObjectURL(
+            downloadUrl
+        );
+
+
+    } catch (error) {
+
+        alert(
+            error.message ||
+            "Unable to download the Word document."
+        );
+
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "Download Word";
+
+    }
+
+}
 </script>
-
 </body>
-
 </html>

@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     # OpenAI
     OPENAI_API_KEY: str = ""
 
+    # Test Mode
+    TEST_MODE: bool = True
+
     model_config = SettingsConfigDict(
         env_file=".env",
         extra="ignore"
