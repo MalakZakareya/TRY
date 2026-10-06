@@ -23,14 +23,11 @@ ALLOWED_STATUSES = {
 }
 
 
-def clean_json_response(
-    text: str,
-) -> str:
+def clean_json_response(text: str) -> str:
     cleaned = text.strip()
 
     if cleaned.startswith("```json"):
         cleaned = cleaned[7:]
-
     elif cleaned.startswith("```"):
         cleaned = cleaned[3:]
 
@@ -38,6 +35,229 @@ def clean_json_response(
         cleaned = cleaned[:-3]
 
     return cleaned.strip()
+
+
+def get_requirement_source_url(
+    requirement: dict[str, Any],
+) -> str:
+    """
+    Return a trusted official NEA source URL.
+
+    Prefer the direct official standards document.
+    Fall back to the official NEA documents page.
+    """
+
+    document_url = str(
+        requirement.get(
+            "document_url",
+            "",
+        )
+    ).strip()
+
+    if document_url:
+        return document_url
+
+    source_page_url = str(
+        requirement.get(
+            "source_page_url",
+            "",
+        )
+    ).strip()
+
+    if source_page_url:
+        return source_page_url
+
+    return ""
+
+
+def build_requirement_key(
+    section_number: str,
+    title: str,
+) -> str:
+    return (
+        section_number.strip().lower()
+        + "|"
+        + title.strip().lower()
+    )
+
+
+def build_trusted_requirement_map(
+    nea_requirements: list[dict[str, Any]],
+) -> dict[str, dict[str, Any]]:
+    """
+    Build a map of the NEA requirements that were actually
+    retrieved from the trusted local knowledge base.
+
+    The AI is only allowed to return sections contained here.
+    """
+
+    trusted_map: dict[
+        str,
+        dict[str, Any],
+    ] = {}
+
+    for requirement in nea_requirements:
+        section_number = str(
+            requirement.get(
+                "section_number",
+                "",
+            )
+        ).strip()
+
+        title = str(
+            requirement.get(
+                "title",
+                "",
+            )
+        ).strip()
+
+        if not section_number:
+            continue
+
+        key = build_requirement_key(
+            section_number=section_number,
+            title=title,
+        )
+
+        trusted_map[key] = requirement
+
+    return trusted_map
+
+
+def find_trusted_requirement(
+    section_number: str,
+    title: str,
+    nea_requirements: list[dict[str, Any]],
+) -> dict[str, Any] | None:
+    """
+    Find the real NEA requirement corresponding to an AI result.
+
+    First try section number + title.
+    If that fails, fall back to section number only.
+    """
+
+    trusted_map = build_trusted_requirement_map(
+        nea_requirements
+    )
+
+    exact_key = build_requirement_key(
+        section_number=section_number,
+        title=title,
+    )
+
+    exact_match = trusted_map.get(
+        exact_key
+    )
+
+    if exact_match is not None:
+        return exact_match
+
+    normalized_section = (
+        section_number.strip().lower()
+    )
+
+    section_matches: list[
+        dict[str, Any]
+    ] = []
+
+    for requirement in nea_requirements:
+        trusted_section = str(
+            requirement.get(
+                "section_number",
+                "",
+            )
+        ).strip().lower()
+
+        if (
+            trusted_section
+            == normalized_section
+        ):
+            section_matches.append(
+                requirement
+            )
+
+    if len(section_matches) == 1:
+        return section_matches[0]
+
+    return None
+
+
+def build_safe_requirements_for_ai(
+    nea_requirements: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """
+    Build the requirements sent to the AI.
+
+    Source metadata is included for context, but the final
+    source returned to the frontend is always restored from
+    the trusted knowledge base after the AI response.
+    """
+
+    safe_requirements: list[
+        dict[str, Any]
+    ] = []
+
+    for requirement in nea_requirements:
+        section_number = str(
+            requirement.get(
+                "section_number",
+                "",
+            )
+        ).strip()
+
+        if not section_number:
+            continue
+
+        safe_requirements.append(
+            {
+                "source_id": str(
+                    requirement.get(
+                        "source_id",
+                        "",
+                    )
+                ).strip(),
+                "source_title": str(
+                    requirement.get(
+                        "source_title",
+                        "",
+                    )
+                ).strip(),
+                "authority": str(
+                    requirement.get(
+                        "authority",
+                        "",
+                    )
+                ).strip(),
+                "section_number": (
+                    section_number
+                ),
+                "title": str(
+                    requirement.get(
+                        "title",
+                        "",
+                    )
+                ).strip(),
+                "text": str(
+                    requirement.get(
+                        "text",
+                        "",
+                    )
+                ).strip(),
+                "matched_element": str(
+                    requirement.get(
+                        "matched_element",
+                        "",
+                    )
+                ).strip(),
+                "source_url": (
+                    get_requirement_source_url(
+                        requirement
+                    )
+                ),
+            }
+        )
+
+    return safe_requirements
 
 
 def build_compliance_prompt(
@@ -50,8 +270,14 @@ def build_compliance_prompt(
         indent=2,
     )
 
+    safe_requirements = (
+        build_safe_requirements_for_ai(
+            nea_requirements
+        )
+    )
+
     requirements_json = json.dumps(
-        nea_requirements,
+        safe_requirements,
         ensure_ascii=False,
         indent=2,
     )
@@ -61,11 +287,15 @@ You are reviewing a website or mobile application
 UI design against retrieved Bahrain NEA requirements.
 
 You must use ONLY:
+
 1. The visual observations provided below.
 2. The retrieved NEA requirements provided below.
 
 Do not invent requirements.
 Do not use requirements that were not provided.
+Do not invent section numbers.
+Do not invent titles.
+Do not invent source URLs.
 Do not claim that something is visible unless it
 appears in the visual observations.
 
@@ -90,18 +320,23 @@ The requirement cannot be reliably checked from
 the supplied visual design alone.
 
 Important:
-Technical or runtime requirements that cannot be
-verified from a screenshot or design image must
-be NOT VERIFIED.
+
+Technical, behavioral, accessibility, navigation,
+link-target, HTML, runtime, keyboard, screen-reader,
+responsive, or implementation requirements that
+cannot be proven from the supplied static visual
+evidence must be NOT VERIFIED.
 
 For every result:
-- preserve the NEA section number
-- preserve the NEA title
-- explain the observed evidence
-- explain the comparison
-- provide a recommendation when useful
-- preserve the official source URL
-- never invent a source
+
+- preserve the exact NEA section number
+- preserve the exact NEA title
+- explain only the observed visual evidence
+- explain the comparison with the requirement
+- provide a practical recommendation when useful
+- use only a requirement supplied below
+- do not invent a source
+- do not make assumptions about hidden behavior
 
 VISUAL OBSERVATIONS:
 
@@ -114,24 +349,31 @@ RETRIEVED NEA REQUIREMENTS:
 Return valid JSON only in this exact structure:
 
 {{
-  "results": [
-    {{
-      "section_number": "4.20",
-      "title": "Colors",
-      "status": "PASS",
-      "observed_evidence": "Visible evidence",
-      "analysis": "Comparison with the requirement",
-      "recommendation": "Recommendation",
-      "source_url": "official source URL"
-    }}
-  ]
+    "results": [
+        {{
+            "section_number": "4.20",
+            "title": "Colors",
+            "status": "PASS",
+            "observed_evidence": "Visible evidence",
+            "analysis": "Comparison with the requirement",
+            "recommendation": "Recommendation"
+        }}
+    ]
 }}
 """
 
 
 def validate_compliance_results(
     raw_results: Any,
+    nea_requirements: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
+    """
+    Validate AI output against the requirements actually
+    retrieved from the trusted NEA knowledge base.
+
+    The source URL is NEVER trusted from AI output.
+    """
+
     if not isinstance(
         raw_results,
         list,
@@ -144,6 +386,8 @@ def validate_compliance_results(
     validated: list[
         dict[str, Any]
     ] = []
+
+    seen_requirements: set[str] = set()
 
     for raw_item in cast(
         list[Any],
@@ -202,25 +446,66 @@ def validate_compliance_results(
             )
         ).strip()
 
-        source_url = str(
-            item.get(
-                "source_url",
+        if not section_number:
+            continue
+
+        trusted_requirement = (
+            find_trusted_requirement(
+                section_number=section_number,
+                title=title,
+                nea_requirements=(
+                    nea_requirements
+                ),
+            )
+        )
+
+        # Reject any requirement invented by AI.
+        if trusted_requirement is None:
+            continue
+
+        trusted_section = str(
+            trusted_requirement.get(
+                "section_number",
                 "",
             )
         ).strip()
 
+        trusted_title = str(
+            trusted_requirement.get(
+                "title",
+                "",
+            )
+        ).strip()
+
+        unique_key = (
+            build_requirement_key(
+                section_number=trusted_section,
+                title=trusted_title,
+            )
+        )
+
+        if unique_key in seen_requirements:
+            continue
+
+        seen_requirements.add(
+            unique_key
+        )
+
         if status not in ALLOWED_STATUSES:
             status = "NOT VERIFIED"
 
-        if not section_number:
-            continue
+        source_url = (
+            get_requirement_source_url(
+                trusted_requirement
+            )
+        )
 
         validated.append(
             {
                 "section_number": (
-                    section_number
+                    trusted_section
                 ),
-                "title": title,
+                "title": trusted_title,
                 "status": status,
                 "observed_evidence": (
                     observed_evidence
@@ -245,9 +530,14 @@ def get_test_compliance_results(
     NEA requirements retrieved from the knowledge base.
 
     No OpenAI API request is made.
+
+    Official source URLs are taken directly from
+    the trusted NEA knowledge base.
     """
 
-    results: list[dict[str, Any]] = []
+    results: list[
+        dict[str, Any]
+    ] = []
 
     statuses = [
         "PASS",
@@ -274,29 +564,30 @@ def get_test_compliance_results(
             )
         ).strip()
 
-        source_url = str(
-            requirement.get(
-                "source_url",
-                "",
-            )
-        ).strip()
-
         if not section_number:
             continue
+
+        source_url = (
+            get_requirement_source_url(
+                requirement
+            )
+        )
 
         status = statuses[
             index % len(statuses)
         ]
 
         if observations:
+            observation = observations[
+                index % len(observations)
+            ]
+
             observed_evidence = str(
-                observations[
-                    index % len(observations)
-                ].get(
+                observation.get(
                     "observation",
                     "Test-mode visual observation.",
                 )
-            )
+            ).strip()
         else:
             observed_evidence = (
                 "No visual observation was "
@@ -385,6 +676,7 @@ def analyze_design_compliance(
     # ---------------------------------------------------------
     # TEST MODE
     # ---------------------------------------------------------
+
     if settings.TEST_MODE:
         return get_test_compliance_results(
             observations=observations,
@@ -406,7 +698,9 @@ def analyze_design_compliance(
             input=prompt,
         )
 
-        output_text = response.output_text
+        output_text = (
+            response.output_text
+        )
 
         if not output_text:
             raise DesignComplianceError(
@@ -442,7 +736,8 @@ def analyze_design_compliance(
         )
 
         return validate_compliance_results(
-            raw_results
+            raw_results=raw_results,
+            nea_requirements=nea_requirements,
         )
 
     except DesignComplianceError:

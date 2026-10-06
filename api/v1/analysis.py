@@ -18,7 +18,7 @@ from services.ai_service import (
 )
 
 from services.legal_analysis_service import (
-    compare_point_with_regulations,
+    compare_points_with_regulations_batch,
     retrieve_laws_for_points,
 )
 
@@ -39,18 +39,18 @@ def get_valid_points(
 
     raw_points: Any = ai_analysis.get(
         "points",
-        []
+        [],
     )
 
     if not isinstance(
         raw_points,
-        list
+        list,
     ):
         return []
 
     typed_points = cast(
         list[Any],
-        raw_points
+        raw_points,
     )
 
     points: list[
@@ -58,16 +58,15 @@ def get_valid_points(
     ] = []
 
     for raw_point in typed_points:
-
         if not isinstance(
             raw_point,
-            dict
+            dict,
         ):
             continue
 
         point = cast(
             dict[str, Any],
-            raw_point
+            raw_point,
         )
 
         points.append(
@@ -77,52 +76,9 @@ def get_valid_points(
     return points
 
 
-def get_valid_regulations(
-    raw_regulations: Any,
-) -> list[dict[str, Any]]:
-    """
-    Safely validate retrieved
-    Bahrain regulations.
-    """
-
-    if not isinstance(
-        raw_regulations,
-        list
-    ):
-        return []
-
-    typed_regulations = cast(
-        list[Any],
-        raw_regulations
-    )
-
-    regulations: list[
-        dict[str, Any]
-    ] = []
-
-    for raw_regulation in typed_regulations:
-
-        if not isinstance(
-            raw_regulation,
-            dict
-        ):
-            continue
-
-        regulation = cast(
-            dict[str, Any],
-            raw_regulation
-        )
-
-        regulations.append(
-            regulation
-        )
-
-    return regulations
-
-
 @router.post("/document")
 async def analyze_document(
-    file: UploadFile = File(...)
+    file: UploadFile = File(...),
 ) -> dict[str, Any]:
     """
     Complete Analyze Document pipeline:
@@ -132,12 +88,12 @@ async def analyze_document(
     3. Use AI to understand the document.
     4. Extract meaningful document points.
     5. Retrieve relevant Bahrain regulations.
-    6. Compare each point with retrieved laws.
+    6. Compare the points with retrieved laws
+       using batched legal AI analysis.
     7. Return the complete legal analysis.
     """
 
     try:
-
         filename = file.filename
 
         if not filename:
@@ -149,15 +105,38 @@ async def analyze_document(
                 ),
             )
 
+        print(
+            f"\n=== ANALYZE DOCUMENT START: "
+            f"{filename} ===",
+            flush=True,
+        )
+
         # ---------------------------------
         # 1. Read uploaded file
         # ---------------------------------
 
+        print(
+            "STEP 1: Reading uploaded file...",
+            flush=True,
+        )
+
         content = await file.read()
+
+        print(
+            "STEP 1 COMPLETE: File read -",
+            len(content),
+            "bytes",
+            flush=True,
+        )
 
         # ---------------------------------
         # 2. Extract document text
         # ---------------------------------
+
+        print(
+            "STEP 2: Extracting document text...",
+            flush=True,
+        )
 
         result: DocumentResult = (
             extract_document_text(
@@ -166,9 +145,21 @@ async def analyze_document(
             )
         )
 
+        print(
+            "STEP 2 COMPLETE: Text extraction -",
+            result["characters"],
+            "characters",
+            flush=True,
+        )
+
         # ---------------------------------
         # 3. AI reads the document
         # ---------------------------------
+
+        print(
+            "STEP 3: Sending document to OpenAI...",
+            flush=True,
+        )
 
         ai_analysis = (
             analyze_document_text(
@@ -178,17 +169,56 @@ async def analyze_document(
             )
         )
 
+        print(
+            "STEP 3 COMPLETE: "
+            "OpenAI document analysis returned",
+            flush=True,
+        )
+
         # ---------------------------------
         # 4. Validate extracted points
         # ---------------------------------
+
+        print(
+            "STEP 4: Validating AI points...",
+            flush=True,
+        )
 
         points = get_valid_points(
             ai_analysis
         )
 
+        print(
+            "STEP 4 COMPLETE: Points found -",
+            len(points),
+            flush=True,
+        )
+
+        for index, point in enumerate(
+            points,
+            start=1,
+        ):
+            point_title = (
+                point.get("title")
+                or point.get("topic")
+                or point.get("name")
+                or "Untitled point"
+            )
+
+            print(
+                f"    Point {index}: "
+                f"{point_title}",
+                flush=True,
+            )
+
         # ---------------------------------
         # 5. Retrieve Bahrain laws
         # ---------------------------------
+
+        print(
+            "STEP 5: Retrieving Bahrain laws...",
+            flush=True,
+        )
 
         legal_retrieval = (
             retrieve_laws_for_points(
@@ -197,67 +227,54 @@ async def analyze_document(
             )
         )
 
+        print(
+            "STEP 5 COMPLETE: Legal retrieval -",
+            len(legal_retrieval),
+            "items",
+            flush=True,
+        )
+
         # ---------------------------------
-        # 6. Legal comparison
+        # 6. BATCH legal comparison
         # ---------------------------------
 
-        legal_analysis: list[
-            dict[str, Any]
-        ] = []
+        print(
+            "STEP 6: Starting BATCH "
+            "legal comparisons...",
+            flush=True,
+        )
 
-        for item in legal_retrieval:
+        print(
+            "STEP 6: Total points -",
+            len(legal_retrieval),
+            flush=True,
+        )
 
-            raw_point: Any = item.get(
-                "point",
-                {}
+        legal_analysis = (
+            compare_points_with_regulations_batch(
+                legal_retrieval=legal_retrieval,
+                batch_size=8,
             )
+        )
 
-            if not isinstance(
-                raw_point,
-                dict
-            ):
-                continue
-
-            point = cast(
-                dict[str, Any],
-                raw_point
-            )
-
-            raw_regulations: Any = (
-                item.get(
-                    "regulations",
-                    []
-                )
-            )
-
-            regulations = (
-                get_valid_regulations(
-                    raw_regulations
-                )
-            )
-
-            comparison = (
-                compare_point_with_regulations(
-                    point=point,
-                    regulations=regulations,
-                )
-            )
-
-            legal_analysis.append(
-                {
-                    "point": point,
-                    "retrieved_regulations": (
-                        regulations
-                    ),
-                    "comparison": comparison,
-                }
-            )
+        print(
+            "STEP 6 COMPLETE: "
+            "All BATCH legal comparisons finished -",
+            len(legal_analysis),
+            "results",
+            flush=True,
+        )
 
         # ---------------------------------
         # 7. Return final result
         # ---------------------------------
 
-        return {
+        print(
+            "STEP 7: Returning final response...",
+            flush=True,
+        )
+
+        response = {
             "success": True,
             "message": (
                 "Document analyzed successfully."
@@ -282,22 +299,60 @@ async def analyze_document(
             ),
         }
 
+        print(
+            "STEP 7 COMPLETE: "
+            "Final response ready",
+            flush=True,
+        )
+
+        print(
+            "=== ANALYZE DOCUMENT COMPLETE ===\n",
+            flush=True,
+        )
+
+        return response
+
     except HTTPException:
+        print(
+            "ANALYZE DOCUMENT ERROR: "
+            "HTTPException",
+            flush=True,
+        )
         raise
 
     except DocumentProcessingError as exc:
+        print(
+            "ANALYZE DOCUMENT ERROR: "
+            f"DocumentProcessingError - {exc}",
+            flush=True,
+        )
+
         raise HTTPException(
             status_code=400,
             detail=str(exc),
         ) from exc
 
     except ValueError as exc:
+        print(
+            "ANALYZE DOCUMENT ERROR: "
+            f"ValueError - {exc}",
+            flush=True,
+        )
+
         raise HTTPException(
             status_code=500,
             detail=str(exc),
         ) from exc
 
     except Exception as exc:
+        print(
+            "ANALYZE DOCUMENT ERROR:",
+            type(exc).__name__,
+            "-",
+            str(exc),
+            flush=True,
+        )
+
         raise HTTPException(
             status_code=500,
             detail=(
@@ -308,3 +363,8 @@ async def analyze_document(
 
     finally:
         await file.close()
+
+        print(
+            "Uploaded file closed.",
+            flush=True,
+        )

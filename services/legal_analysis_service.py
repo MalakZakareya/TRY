@@ -21,6 +21,13 @@ ALLOWED_STATUSES = {
 
 
 # ---------------------------------------------------------
+# Batch configuration
+# ---------------------------------------------------------
+
+LEGAL_BATCH_SIZE = 8
+
+
+# ---------------------------------------------------------
 # Point-specific legal search expansion
 # ---------------------------------------------------------
 
@@ -510,8 +517,6 @@ def retrieve_laws_for_point(
             "regulations": [],
         }
 
-    # Search more broadly internally before
-    # deduplication and applicability filtering.
     internal_limit = max(
         limit * 3,
         10,
@@ -523,14 +528,12 @@ def retrieve_laws_for_point(
     ] = {}
 
     for query in queries:
-
         matches = search_regulations(
             query=query,
             limit=internal_limit,
         )
 
         for match in matches:
-
             if not regulation_is_applicable_to_point(
                 point=point,
                 regulation=match,
@@ -695,7 +698,6 @@ def retrieve_laws_for_points(
     ] = []
 
     for point in points:
-
         result = retrieve_laws_for_point(
             point=point,
             limit=limit_per_point,
@@ -721,7 +723,6 @@ def build_legal_sources(
     ] = []
 
     for regulation in regulations:
-
         legal_sources.append(
             {
                 "source_id": regulation.get(
@@ -771,7 +772,6 @@ def get_allowed_article_keys(
     ] = set()
 
     for source in legal_sources:
-
         law_number = str(
             source.get(
                 "law_number",
@@ -871,7 +871,6 @@ def validate_legal_analysis(
     ] = []
 
     for raw_article in raw_articles:
-
         if not isinstance(
             raw_article,
             dict,
@@ -1020,7 +1019,6 @@ def get_test_legal_analysis(
     ] = []
 
     for source in legal_sources[:3]:
-
         test_articles.append(
             {
                 "law_number": str(
@@ -1072,6 +1070,55 @@ def get_test_legal_analysis(
     }
 
 
+def get_not_verified_analysis(
+    explanation: str = (
+        "No relevant Bahrain regulation "
+        "was retrieved for this point."
+    ),
+) -> dict[str, Any]:
+    """
+    Return a safe result when a point cannot
+    be legally verified.
+    """
+
+    return {
+        "status": "NOT VERIFIED",
+        "explanation": explanation,
+        "relevant_articles": [],
+        "recommendation": (
+            "This point requires further "
+            "legal verification."
+        ),
+    }
+
+
+def clean_json_response(
+    result_text: str,
+) -> str:
+    """
+    Remove optional Markdown JSON fences.
+    """
+
+    cleaned = result_text.strip()
+
+    if cleaned.startswith(
+        "```json"
+    ):
+        cleaned = cleaned[7:]
+
+    elif cleaned.startswith(
+        "```"
+    ):
+        cleaned = cleaned[3:]
+
+    if cleaned.endswith(
+        "```"
+    ):
+        cleaned = cleaned[:-3]
+
+    return cleaned.strip()
+
+
 def compare_point_with_regulations(
     point: dict[str, Any],
     regulations: list[dict[str, Any]],
@@ -1080,24 +1127,16 @@ def compare_point_with_regulations(
     Compare one document point with retrieved
     Bahrain regulations.
 
-    TEST_MODE does not call OpenAI.
-    REAL MODE uses OpenAI only with trusted
-    retrieved legal provisions.
+    Kept for compatibility with any other part
+    of the application that uses single-point
+    legal analysis.
+
+    Analyze Document will use the batch function
+    below for much better performance.
     """
 
     if not regulations:
-        return {
-            "status": "NOT VERIFIED",
-            "explanation": (
-                "No relevant Bahrain regulation "
-                "was retrieved for this point."
-            ),
-            "relevant_articles": [],
-            "recommendation": (
-                "This point requires further "
-                "legal verification."
-            ),
-        }
+        return get_not_verified_analysis()
 
     legal_sources = build_legal_sources(
         regulations
@@ -1108,7 +1147,6 @@ def compare_point_with_regulations(
     # ---------------------------------------------------------
 
     if settings.TEST_MODE:
-
         test_result = get_test_legal_analysis(
             legal_sources
         )
@@ -1198,40 +1236,14 @@ Return ONLY valid JSON using exactly this structure:
         input=prompt,
     )
 
-    result_text = (
-        response.output_text.strip()
-    )
-
-    if result_text.startswith(
-        "```json"
-    ):
-        result_text = result_text[
-            7:
-        ]
-
-    if result_text.startswith(
-        "```"
-    ):
-        result_text = result_text[
-            3:
-        ]
-
-    if result_text.endswith(
-        "```"
-    ):
-        result_text = result_text[
-            :-3
-        ]
-
-    result_text = (
-        result_text.strip()
+    result_text = clean_json_response(
+        response.output_text
     )
 
     try:
         raw_result: Any = json.loads(
             result_text
         )
-
     except json.JSONDecodeError as exc:
         raise ValueError(
             "The AI returned an invalid legal "
@@ -1256,3 +1268,621 @@ Return ONLY valid JSON using exactly this structure:
         result=result,
         legal_sources=legal_sources,
     )
+
+
+# ---------------------------------------------------------
+# Batch legal analysis
+# ---------------------------------------------------------
+
+def build_batch_item(
+    batch_id: int,
+    point: dict[str, Any],
+    regulations: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """
+    Build one isolated item for a batch request.
+
+    Every point receives only its own retrieved
+    Bahrain legal provisions.
+    """
+
+    return {
+        "batch_id": batch_id,
+        "point": point,
+        "legal_provisions": build_legal_sources(
+            regulations
+        ),
+    }
+
+
+def parse_batch_results(
+    raw_result: Any,
+) -> list[dict[str, Any]]:
+    """
+    Safely extract the results array returned
+    by the batch OpenAI request.
+    """
+
+    if not isinstance(
+        raw_result,
+        dict,
+    ):
+        raise ValueError(
+            "The AI returned an invalid batch "
+            "legal analysis response."
+        )
+
+    typed_result = cast(
+        dict[str, Any],
+        raw_result,
+    )
+
+    raw_results_value: Any = (
+        typed_result.get(
+            "results",
+            [],
+        )
+    )
+
+    if not isinstance(
+        raw_results_value,
+        list,
+    ):
+        raise ValueError(
+            "The AI batch legal analysis "
+            "did not return a results list."
+        )
+
+    raw_results = cast(
+        list[Any],
+        raw_results_value,
+    )
+
+    valid_results: list[
+        dict[str, Any]
+    ] = []
+
+    for raw_item in raw_results:
+        if not isinstance(
+            raw_item,
+            dict,
+        ):
+            continue
+
+        valid_results.append(
+            cast(
+                dict[str, Any],
+                raw_item,
+            )
+        )
+
+    return valid_results
+
+
+def analyze_legal_batch(
+    batch_items: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """
+    Analyze several independent document points
+    in one OpenAI request.
+
+    Each point remains isolated from the other
+    points and may only use its own legal_provisions.
+    """
+
+    if not batch_items:
+        return []
+
+    prompt = f"""
+You are performing a careful legal comparison
+of multiple independent document points against
+retrieved Bahrain legal provisions.
+
+You will receive a JSON array named BATCH ITEMS.
+
+Each item contains:
+
+- batch_id
+- point
+- legal_provisions
+
+CRITICAL RULES:
+
+1. Analyze EACH batch item independently.
+
+2. For each item, use ONLY the legal_provisions
+   contained inside THAT SAME item.
+
+3. Never use a legal provision belonging to one
+   batch item to analyze another batch item.
+
+4. Do NOT invent Bahrain laws, articles,
+   requirements, legal rules, or source URLs.
+
+5. Do NOT rely on legal knowledge that is not
+   explicitly provided in the item's
+   legal_provisions.
+
+6. A retrieved provision may be irrelevant even
+   when it contains similar words. Determine
+   actual relevance carefully.
+
+7. Ignore retrieved provisions that are not
+   genuinely relevant to the document point.
+
+8. If the supplied provisions are insufficient
+   to verify a point, return NOT VERIFIED.
+
+9. Preserve law_number, year, article and
+   source_url exactly as supplied.
+
+10. Never cite an article unless it appears in
+    the legal_provisions for that same item.
+
+11. Be conservative. Do not treat uncertainty
+    as legal compliance.
+
+12. Return exactly one result for every batch_id.
+
+Allowed status values:
+
+PASS
+The document point appears consistent with the
+supplied relevant provisions.
+
+ISSUE
+The document point appears to conflict with a
+supplied relevant provision.
+
+WARNING
+There is a potential concern, ambiguity,
+missing condition, or qualification requiring
+review.
+
+NOT VERIFIED
+The supplied provisions are not sufficient to
+verify the point.
+
+BATCH ITEMS:
+
+{json.dumps(
+    batch_items,
+    ensure_ascii=False,
+    indent=2
+)}
+
+Return ONLY valid JSON using exactly this structure:
+
+{{
+    "results": [
+        {{
+            "batch_id": 1,
+            "status": "PASS | ISSUE | WARNING | NOT VERIFIED",
+            "explanation": "",
+            "relevant_articles": [
+                {{
+                    "law_number": "",
+                    "year": "",
+                    "article": "",
+                    "source_url": "",
+                    "reason": ""
+                }}
+            ],
+            "recommendation": ""
+        }}
+    ]
+}}
+
+Do not return Markdown.
+Do not return commentary outside the JSON.
+"""
+
+    response = client.responses.create(
+        model="gpt-5.6",
+        input=prompt,
+    )
+
+    result_text = clean_json_response(
+        response.output_text
+    )
+
+    try:
+        raw_result: Any = json.loads(
+            result_text
+        )
+    except json.JSONDecodeError as exc:
+        raise ValueError(
+            "The AI returned an invalid batch "
+            "legal analysis JSON response."
+        ) from exc
+
+    return parse_batch_results(
+        raw_result
+    )
+
+
+def get_batch_result_by_id(
+    batch_results: list[dict[str, Any]],
+    batch_id: int,
+) -> dict[str, Any] | None:
+    """
+    Find one AI result by its batch_id.
+    """
+
+    for result in batch_results:
+        raw_id: Any = result.get(
+            "batch_id"
+        )
+
+        try:
+            result_id = int(
+                str(raw_id)
+            )
+        except (
+            TypeError,
+            ValueError,
+        ):
+            continue
+
+        if result_id == batch_id:
+            return result
+
+    return None
+
+
+def compare_points_with_regulations_batch(
+    legal_retrieval: list[dict[str, Any]],
+    batch_size: int = LEGAL_BATCH_SIZE,
+) -> list[dict[str, Any]]:
+    """
+    Compare all retrieved document points against
+    Bahrain regulations using batched OpenAI calls.
+
+    Instead of one OpenAI request for every point,
+    several points are analyzed in one request.
+
+    Important:
+    - Every point keeps its own regulations.
+    - Every AI result is validated against the
+      regulations supplied for that point.
+    - Points with no regulations do not call AI.
+    - TEST_MODE does not call OpenAI.
+    - Output order follows input order.
+    """
+
+    if batch_size < 1:
+        raise ValueError(
+            "Legal batch size must be at least 1."
+        )
+
+    prepared_items: list[
+        dict[str, Any]
+    ] = []
+
+    final_results: dict[
+        int,
+        dict[str, Any],
+    ] = {}
+
+    for original_index, item in enumerate(
+        legal_retrieval
+    ):
+        raw_point: Any = item.get(
+            "point",
+            {},
+        )
+
+        if not isinstance(
+            raw_point,
+            dict,
+        ):
+            continue
+
+        point = cast(
+            dict[str, Any],
+            raw_point,
+        )
+
+        raw_regulations_value: Any = item.get(
+            "regulations",
+            [],
+        )
+
+        regulations: list[
+            dict[str, Any]
+        ] = []
+
+        if isinstance(
+            raw_regulations_value,
+            list,
+        ):
+            typed_regulations = cast(
+                list[Any],
+                raw_regulations_value,
+            )
+
+            for raw_regulation in typed_regulations:
+                if not isinstance(
+                    raw_regulation,
+                    dict,
+                ):
+                    continue
+
+                regulations.append(
+                    cast(
+                        dict[str, Any],
+                        raw_regulation,
+                    )
+                )
+
+        # No retrieved legal material:
+        # no reason to spend an OpenAI request.
+        if not regulations:
+            final_results[
+                original_index
+            ] = {
+                "point": point,
+                "retrieved_regulations": [],
+                "comparison": (
+                    get_not_verified_analysis()
+                ),
+            }
+
+            continue
+
+        legal_sources = build_legal_sources(
+            regulations
+        )
+
+        # TEST MODE remains deterministic.
+        if settings.TEST_MODE:
+            test_result = (
+                get_test_legal_analysis(
+                    legal_sources
+                )
+            )
+
+            comparison = (
+                validate_legal_analysis(
+                    result=test_result,
+                    legal_sources=legal_sources,
+                )
+            )
+
+            final_results[
+                original_index
+            ] = {
+                "point": point,
+                "retrieved_regulations": (
+                    regulations
+                ),
+                "comparison": comparison,
+            }
+
+            continue
+
+        prepared_items.append(
+            {
+                "original_index": original_index,
+                "point": point,
+                "regulations": regulations,
+                "legal_sources": legal_sources,
+            }
+        )
+
+    # -----------------------------------------------------
+    # REAL AI BATCH PROCESSING
+    # -----------------------------------------------------
+
+    if (
+        not settings.TEST_MODE
+        and prepared_items
+    ):
+        total_batches = (
+            len(prepared_items)
+            + batch_size
+            - 1
+        ) // batch_size
+
+        for batch_number, start in enumerate(
+            range(
+                0,
+                len(prepared_items),
+                batch_size,
+            ),
+            start=1,
+        ):
+            chunk = prepared_items[
+                start:start + batch_size
+            ]
+
+            print(
+                f"LEGAL AI BATCH "
+                f"{batch_number}/{total_batches}: "
+                f"Analyzing {len(chunk)} points...",
+                flush=True,
+            )
+
+            request_items: list[
+                dict[str, Any]
+            ] = []
+
+            batch_lookup: dict[
+                int,
+                dict[str, Any],
+            ] = {}
+
+            for local_index, prepared in enumerate(
+                chunk,
+                start=1,
+            ):
+                point = cast(
+                    dict[str, Any],
+                    prepared["point"],
+                )
+
+                regulations = cast(
+                    list[dict[str, Any]],
+                    prepared["regulations"],
+                )
+
+                request_items.append(
+                    build_batch_item(
+                        batch_id=local_index,
+                        point=point,
+                        regulations=regulations,
+                    )
+                )
+
+                batch_lookup[
+                    local_index
+                ] = prepared
+
+            try:
+                ai_batch_results = (
+                    analyze_legal_batch(
+                        request_items
+                    )
+                )
+
+            except Exception as exc:
+                # A failed batch must not leave the
+                # entire document request hanging or
+                # discard all other completed results.
+                print(
+                    f"LEGAL AI BATCH "
+                    f"{batch_number}/{total_batches} "
+                    f"ERROR: "
+                    f"{type(exc).__name__} - {exc}",
+                    flush=True,
+                )
+
+                for prepared in chunk:
+                    original_index = int(
+                        prepared[
+                            "original_index"
+                        ]
+                    )
+
+                    point = cast(
+                        dict[str, Any],
+                        prepared["point"],
+                    )
+
+                    regulations = cast(
+                        list[dict[str, Any]],
+                        prepared["regulations"],
+                    )
+
+                    final_results[
+                        original_index
+                    ] = {
+                        "point": point,
+                        "retrieved_regulations": (
+                            regulations
+                        ),
+                        "comparison": (
+                            get_not_verified_analysis(
+                                (
+                                    "The legal AI comparison "
+                                    "could not be completed "
+                                    "for this point."
+                                )
+                            )
+                        ),
+                    }
+
+                continue
+
+            for local_index, prepared in (
+                batch_lookup.items()
+            ):
+                original_index = int(
+                    prepared[
+                        "original_index"
+                    ]
+                )
+
+                point = cast(
+                    dict[str, Any],
+                    prepared["point"],
+                )
+
+                regulations = cast(
+                    list[dict[str, Any]],
+                    prepared["regulations"],
+                )
+
+                legal_sources = cast(
+                    list[dict[str, Any]],
+                    prepared["legal_sources"],
+                )
+
+                ai_result = (
+                    get_batch_result_by_id(
+                        batch_results=(
+                            ai_batch_results
+                        ),
+                        batch_id=local_index,
+                    )
+                )
+
+                if ai_result is None:
+                    comparison = (
+                        get_not_verified_analysis(
+                            (
+                                "The legal AI batch "
+                                "did not return a result "
+                                "for this point."
+                            )
+                        )
+                    )
+
+                else:
+                    comparison = (
+                        validate_legal_analysis(
+                            result=ai_result,
+                            legal_sources=(
+                                legal_sources
+                            ),
+                        )
+                    )
+
+                final_results[
+                    original_index
+                ] = {
+                    "point": point,
+                    "retrieved_regulations": (
+                        regulations
+                    ),
+                    "comparison": comparison,
+                }
+
+            print(
+                f"LEGAL AI BATCH "
+                f"{batch_number}/{total_batches} "
+                "COMPLETE",
+                flush=True,
+            )
+
+    # -----------------------------------------------------
+    # Restore original document-point order
+    # -----------------------------------------------------
+
+    ordered_results: list[
+        dict[str, Any]
+    ] = []
+
+    for original_index in range(
+        len(legal_retrieval)
+    ):
+        result = final_results.get(
+            original_index
+        )
+
+        if result is not None:
+            ordered_results.append(
+                result
+            )
+
+    return ordered_results
