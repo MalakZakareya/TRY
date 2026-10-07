@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -1402,6 +1403,1166 @@
             }
         }
 
+        /* =========================================================
+   AGENTIC AI — PROFESSIONAL UI REDESIGN
+   VISUAL LAYER ONLY
+   ========================================================= */
+
+:root {
+    --background: #111827;
+    --surface: #182131;
+    --surface-2: #1d2839;
+    --surface-3: #243146;
+
+    --white: #ffffff;
+    --text: #f8fafc;
+    --muted: #aab6c8;
+
+    --border: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.16);
+
+    --purple: #8b5cf6;
+    --purple-light: #b8a0ff;
+    --purple-soft: rgba(139, 92, 246, 0.12);
+
+    --blue: #5b8cff;
+    --blue-soft: rgba(91, 140, 255, 0.10);
+
+    --green: #4ade80;
+    --green-soft: rgba(74, 222, 128, 0.10);
+
+    --red: #fb7185;
+    --red-soft: rgba(251, 113, 133, 0.10);
+
+    --yellow: #facc15;
+    --yellow-soft: rgba(250, 204, 21, 0.10);
+
+    --radius: 22px;
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+body {
+    background:
+        radial-gradient(
+            circle at 82% 2%,
+            rgba(139, 92, 246, 0.15),
+            transparent 31%
+        ),
+        radial-gradient(
+            circle at 5% 15%,
+            rgba(91, 140, 255, 0.10),
+            transparent 28%
+        ),
+        linear-gradient(
+            180deg,
+            #131a28 0%,
+            #101722 100%
+        );
+
+    color: var(--text);
+}
+
+.page {
+    width: min(1500px, 94%);
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+    height: 78px;
+    border-bottom: 1px solid var(--border);
+}
+
+.brand-logo {
+    background:
+        linear-gradient(
+            135deg,
+            #9468ff,
+            #5b8cff
+        );
+
+    box-shadow:
+        0 10px 30px rgba(139, 92, 246, 0.22);
+}
+
+.brand-name {
+    font-size: 16px;
+    letter-spacing: -0.2px;
+}
+
+.workspace-status {
+    color: #b7c0cf;
+}
+
+
+/* =========================================================
+   HOME
+   ========================================================= */
+
+.hero {
+    padding-top: 82px;
+    padding-bottom: 58px;
+}
+
+.eyebrow,
+.workspace-label {
+    color: var(--purple-light);
+}
+
+.hero h1 {
+    color: #ffffff;
+}
+
+.hero h1 span {
+    color: #b8a0ff;
+}
+
+.hero-description,
+.section-heading p,
+.feature-content p,
+.panel-info p {
+    color: var(--muted);
+}
+
+.feature-card {
+    border: 1px solid var(--border);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(36, 49, 70, 0.92),
+            rgba(24, 33, 49, 0.92)
+        );
+
+    box-shadow:
+        0 16px 45px rgba(0, 0, 0, 0.12);
+}
+
+.feature-card:hover {
+    border-color: rgba(184, 160, 255, 0.45);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(48, 57, 83, 0.98),
+            rgba(27, 37, 55, 0.98)
+        );
+
+    box-shadow:
+        0 22px 60px rgba(0, 0, 0, 0.18);
+}
+
+.feature-icon {
+    background: rgba(255, 255, 255, 0.07);
+    border-color: var(--border-strong);
+}
+
+.feature-arrow {
+    background: #f8fafc;
+    color: #111827;
+}
+
+
+/* =========================================================
+   WORKSPACE
+   ========================================================= */
+
+.workspace {
+    border-top: 1px solid var(--border);
+}
+
+.workspace-panel {
+    grid-template-columns:
+        minmax(240px, 0.34fr)
+        minmax(0, 1.66fr);
+
+    gap: 48px;
+}
+
+.panel-info {
+    position: sticky;
+    top: 28px;
+}
+
+.panel-info h2 {
+    color: #ffffff;
+}
+
+.back-button {
+    border-color: var(--border-strong);
+    background: rgba(255, 255, 255, 0.035);
+    color: #f8fafc;
+}
+
+.back-button:hover {
+    background: #ffffff;
+    color: #111827;
+}
+
+
+/* =========================================================
+   UPLOAD AREA
+   ========================================================= */
+
+.upload-area {
+    min-height: 390px;
+
+    border:
+        1px dashed
+        rgba(184, 160, 255, 0.30);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(31, 42, 61, 0.96),
+            rgba(24, 33, 49, 0.96)
+        );
+
+    box-shadow:
+        0 18px 55px rgba(0, 0, 0, 0.12);
+}
+
+.upload-area:hover {
+    border-color:
+        rgba(184, 160, 255, 0.50);
+}
+
+.upload-area.dragging {
+    border-color: var(--purple-light);
+
+    background:
+        rgba(139, 92, 246, 0.10);
+}
+
+.upload-icon {
+    background:
+        linear-gradient(
+            135deg,
+            #9468ff,
+            #5b8cff
+        );
+
+    box-shadow:
+        0 12px 32px rgba(139, 92, 246, 0.22);
+}
+
+.choose-button {
+    background: #f8fafc;
+    color: #111827;
+
+    box-shadow:
+        0 8px 22px rgba(0, 0, 0, 0.12);
+}
+
+.selected-file {
+    background: #202c3e;
+    border-color: var(--border);
+}
+
+.remove-button {
+    color: #eef2f7;
+    border-color: var(--border-strong);
+    background: rgba(255, 255, 255, 0.025);
+}
+
+.remove-button:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.analyze-button {
+    background:
+        linear-gradient(
+            135deg,
+            #8b5cf6,
+            #5b8cff
+        );
+
+    box-shadow:
+        0 10px 26px rgba(99, 102, 241, 0.18);
+}
+
+
+/* =========================================================
+   STATUS
+   ========================================================= */
+
+.analysis-status {
+    background: #202b3c;
+    border-color: var(--border);
+    color: #b8c2d1;
+}
+
+.analysis-status.success {
+    border-color:
+        rgba(74, 222, 128, 0.30);
+
+    background:
+        rgba(74, 222, 128, 0.08);
+
+    color: #bbf7d0;
+}
+
+.analysis-status.error {
+    border-color:
+        rgba(251, 113, 133, 0.32);
+
+    background:
+        rgba(251, 113, 133, 0.08);
+
+    color: #fecdd3;
+}
+
+
+/* =========================================================
+   RESULT CONTAINER
+   ========================================================= */
+
+.analysis-result {
+    margin-top: 22px;
+
+    border: none;
+
+    border-radius: 0;
+
+    background: transparent;
+
+    overflow: visible;
+
+    box-shadow: none;
+}
+
+.analysis-result-header {
+    position: relative;
+
+    padding: 22px 24px 22px 78px;
+
+    margin-bottom: 16px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202c3e,
+            #1b2637
+        );
+
+    box-shadow:
+        0 12px 32px rgba(0, 0, 0, 0.10);
+}
+
+.analysis-result-header::before {
+    content: "✓";
+
+    position: absolute;
+
+    left: 22px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(139, 92, 246, 0.22),
+            rgba(91, 140, 255, 0.18)
+        );
+
+    border:
+        1px solid rgba(184, 160, 255, 0.22);
+
+    color: #c4b5fd;
+
+    font-weight: 900;
+}
+
+.analysis-result-header strong {
+    font-size: 16px;
+    color: #ffffff;
+}
+
+.analysis-result-header span {
+    color: #9eabbd;
+}
+
+
+/* =========================================================
+   FILE INFORMATION CARDS
+   ========================================================= */
+
+.analysis-metadata {
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+    gap: 12px;
+
+    padding: 0;
+
+    margin-bottom: 16px;
+}
+
+.analysis-meta-card {
+    min-height: 84px;
+
+    padding: 17px 18px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 15px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202c3e,
+            #1b2637
+        );
+}
+
+.analysis-meta-card small {
+    margin-bottom: 7px;
+
+    color: #91a0b4;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.7px;
+
+    font-weight: 700;
+}
+
+.analysis-meta-card strong {
+    color: #ffffff;
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   LEGAL REPORT / AI SUMMARY
+   ========================================================= */
+
+.legal-report {
+    padding: 0;
+}
+
+.legal-summary {
+    padding: 20px;
+
+    margin-bottom: 14px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202c3e,
+            #1b2637
+        );
+
+    color: #d9e0ea;
+
+    line-height: 1.7;
+}
+
+.legal-summary small {
+    color: #9aa8ba;
+
+    font-size: 11px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+
+/* Document information panel */
+
+#analysisResult .legal-summary:first-child {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+
+    background:
+        rgba(255, 255, 255, 0.035);
+}
+
+#analysisResult .legal-summary:first-child small {
+    width: 100%;
+}
+
+
+/* AI Summary panel */
+
+#analysisResult .legal-summary:nth-child(2) {
+    position: relative;
+
+    padding:
+        22px 24px 22px 68px;
+
+    border-color:
+        rgba(167, 139, 250, 0.24);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(139, 92, 246, 0.14),
+            rgba(91, 140, 255, 0.07)
+        );
+}
+
+#analysisResult .legal-summary:nth-child(2)::before {
+    content: "✦";
+
+    position: absolute;
+
+    left: 22px;
+    top: 22px;
+
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background:
+        rgba(139, 92, 246, 0.16);
+
+    color: #c4b5fd;
+
+    font-size: 15px;
+}
+
+#analysisResult .legal-summary:nth-child(2) small {
+    color: #c4b5fd;
+}
+
+
+/* =========================================================
+   FINDINGS LIST
+   ========================================================= */
+
+#legalAnalysisList,
+#designComplianceList {
+    display: grid;
+
+    grid-template-columns: 1fr;
+
+    gap: 12px;
+
+    align-items: stretch;
+
+    margin-top: 20px;
+}
+
+
+/* Heading above findings */
+
+#legalAnalysisList::before {
+    content: "Findings";
+
+    display: block;
+
+    margin:
+        8px 0 2px;
+
+    color: #ffffff;
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.3px;
+}
+
+#designComplianceList::before {
+    content: "Compliance Findings";
+
+    display: block;
+
+    margin:
+        8px 0 2px;
+
+    color: #ffffff;
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    letter-spacing: -0.3px;
+}
+
+
+/* =========================================================
+   FINDING CARD
+   ========================================================= */
+
+#legalAnalysisList .legal-point,
+#designComplianceList .legal-point {
+    position: relative;
+
+    height: auto;
+
+    margin: 0;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202c3e,
+            #1b2637
+        );
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.08);
+
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+#legalAnalysisList .legal-point:hover,
+#designComplianceList .legal-point:hover {
+    border-color:
+        rgba(184, 160, 255, 0.25);
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+
+/* Finding header */
+
+#legalAnalysisList .legal-point-top,
+#designComplianceList .legal-point-top {
+    min-height: 70px;
+
+    margin: 0;
+
+    padding: 18px 54px 18px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 18px;
+
+    cursor: pointer;
+
+    -webkit-user-select: none;
+user-select: none;
+}
+
+#legalAnalysisList .legal-point-top::after,
+#designComplianceList .legal-point-top::after {
+    content: "⌄";
+
+    position: absolute;
+
+    right: 20px;
+    top: 22px;
+
+    color: #8997aa;
+
+    font-size: 18px;
+
+    transition:
+        transform 0.22s ease,
+        color 0.22s ease;
+}
+
+#legalAnalysisList .legal-point.is-open .legal-point-top::after,
+#designComplianceList .legal-point.is-open .legal-point-top::after {
+    transform: rotate(180deg);
+
+    color: #c4b5fd;
+}
+
+#legalAnalysisList .legal-point h4,
+#designComplianceList .legal-point h4 {
+    margin: 0;
+
+    color: #f8fafc;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
+
+.legal-badge {
+    padding: 6px 10px;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+
+    font-weight: 900;
+
+    letter-spacing: 0.7px;
+}
+
+.legal-badge.pass {
+    color: #86efac;
+
+    background:
+        var(--green-soft);
+
+    border-color:
+        rgba(74, 222, 128, 0.25);
+}
+
+.legal-badge.issue {
+    color: #fda4af;
+
+    background:
+        var(--red-soft);
+
+    border-color:
+        rgba(251, 113, 133, 0.28);
+}
+
+.legal-badge.warning {
+    color: #fde047;
+
+    background:
+        var(--yellow-soft);
+
+    border-color:
+        rgba(250, 204, 21, 0.26);
+}
+
+.legal-badge.not-verified {
+    color: #bdc6d4;
+
+    background:
+        rgba(148, 163, 184, 0.09);
+
+    border-color:
+        rgba(148, 163, 184, 0.22);
+}
+
+
+/* =========================================================
+   COLLAPSIBLE FINDING CONTENT
+   ========================================================= */
+
+#legalAnalysisList .legal-point > .legal-field,
+#designComplianceList .legal-point > .legal-field {
+    display: none;
+}
+
+#legalAnalysisList .legal-point.is-open > .legal-field,
+#designComplianceList .legal-point.is-open > .legal-field {
+    display: block;
+}
+
+
+/* Finding content */
+
+#legalAnalysisList .legal-field,
+#designComplianceList .legal-field {
+    margin: 0;
+
+    padding: 18px 20px;
+
+    border-top:
+        1px solid var(--border);
+
+    color: #d4dce7;
+
+    font-size: 13px;
+
+    line-height: 1.72;
+
+    white-space: pre-wrap;
+}
+
+#legalAnalysisList .legal-field strong,
+#designComplianceList .legal-field strong {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #8f9db0;
+
+    font-size: 10px;
+
+    font-weight: 800;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   SOURCES
+   ========================================================= */
+
+.legal-source {
+    margin-top: 9px;
+
+    padding: 13px 14px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: #cbd5e1;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+.legal-source > strong {
+    color: #e2e8f0 !important;
+
+    font-size: 11px !important;
+
+    letter-spacing: 0 !important;
+
+    text-transform: none !important;
+}
+
+.legal-source a {
+    display: inline-block;
+
+    margin-top: 7px;
+
+    color: #b8a0ff;
+
+    font-weight: 700;
+
+    text-decoration: none;
+}
+
+.legal-source a:hover {
+    color: #d0c2ff;
+
+    text-decoration: underline;
+}
+
+
+/* =========================================================
+   DESIGN REVIEW
+   ========================================================= */
+
+.design-status-summary {
+    margin-top: 4px;
+}
+
+.design-status-summary .analysis-metadata {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    gap: 10px;
+
+    margin: 0;
+
+    padding: 0;
+}
+
+.design-status-summary .analysis-meta-card {
+    min-height: 78px;
+
+    text-align: left;
+
+    background:
+        rgba(255, 255, 255, 0.03);
+}
+
+.design-status-summary
+.analysis-meta-card strong {
+    margin: 0;
+
+    font-size: 23px;
+}
+
+
+/* PASS */
+
+.design-status-summary
+.analysis-meta-card:nth-child(1) {
+    border-color:
+        rgba(74, 222, 128, 0.18);
+}
+
+.design-status-summary
+.analysis-meta-card:nth-child(1) strong {
+    color: #86efac;
+}
+
+
+/* ISSUE */
+
+.design-status-summary
+.analysis-meta-card:nth-child(2) {
+    border-color:
+        rgba(251, 113, 133, 0.18);
+}
+
+.design-status-summary
+.analysis-meta-card:nth-child(2) strong {
+    color: #fda4af;
+}
+
+
+/* WARNING */
+
+.design-status-summary
+.analysis-meta-card:nth-child(3) {
+    border-color:
+        rgba(250, 204, 21, 0.18);
+}
+
+.design-status-summary
+.analysis-meta-card:nth-child(3) strong {
+    color: #fde047;
+}
+
+
+/* NOT VERIFIED */
+
+.design-status-summary
+.analysis-meta-card:nth-child(4) strong {
+    color: #cbd5e1;
+}
+
+
+/* =========================================================
+   CREATE DRAFT
+   ========================================================= */
+
+.draft-option {
+    border-color: var(--border);
+
+    background:
+        linear-gradient(
+            145deg,
+            #202c3e,
+            #1b2637
+        );
+
+    color: #f8fafc;
+
+    box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.draft-option:hover {
+    border-color:
+        rgba(184, 160, 255, 0.45);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(139, 92, 246, 0.13),
+            #1d293b
+        );
+}
+
+#draftFormContainer,
+#draftResult {
+    background: transparent;
+}
+
+#draftFields {
+    padding: 22px !important;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #202c3e,
+            #1b2637
+        );
+}
+
+#draftFields label {
+    color: #cbd5e1 !important;
+}
+
+#draftFields input,
+#draftFields textarea {
+    border-color:
+        var(--border-strong) !important;
+
+    background:
+        #172131 !important;
+
+    color:
+        #f8fafc !important;
+}
+
+#draftFields input:focus,
+#draftFields textarea:focus {
+    border-color:
+        #a78bfa !important;
+
+    background:
+        #1a2537 !important;
+
+    box-shadow:
+        0 0 0 3px
+        rgba(139, 92, 246, 0.12) !important;
+}
+
+#generatedDraftText {
+    color: #e2e8f0;
+
+    line-height: 1.85;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    border-top:
+        1px solid var(--border);
+
+    color: #748196;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .workspace-panel {
+        grid-template-columns:
+            minmax(210px, 0.38fr)
+            minmax(0, 1.62fr);
+
+        gap: 32px;
+    }
+
+    .design-status-summary
+    .analysis-metadata {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 900px) {
+
+    .workspace-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-info {
+        position: static;
+    }
+
+    .analysis-metadata {
+        grid-template-columns: 1fr;
+    }
+
+    .design-status-summary
+    .analysis-metadata {
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .analysis-result-header {
+        padding:
+            18px 18px 18px 66px;
+    }
+
+    .analysis-result-header::before {
+        left: 16px;
+    }
+
+    #legalAnalysisList .legal-point-top,
+    #designComplianceList .legal-point-top {
+        padding:
+            16px 48px 16px 16px;
+
+        align-items: flex-start;
+
+        flex-direction: column;
+    }
+
+    #legalAnalysisList .legal-point-top::after,
+    #designComplianceList .legal-point-top::after {
+        right: 16px;
+        top: 18px;
+    }
+
+    .design-status-summary
+    .analysis-metadata {
+        grid-template-columns: 1fr;
+    }
+}
     </style>
 
 </head>
@@ -2769,284 +3930,365 @@
     }
 
 
-    function renderLegalAnalysis(
-        items
-    ) {
+   function renderLegalAnalysis(
+    items
+) {
 
-        const container =
-            document.getElementById(
-                "legalAnalysisList"
-            );
+    const container =
+        document.getElementById(
+            "legalAnalysisList"
+        );
 
-        container.innerHTML = "";
-
-
-        if (!items.length) {
-
-            container.innerHTML = `
-                <div class="legal-summary">
-                    No legal comparison
-                    results were returned.
-                </div>
-            `;
-
-            return;
-
-        }
+    container.innerHTML = "";
 
 
-        items.forEach(
-            (item, index) => {
+    if (!items.length) {
 
-                const point =
-                    item.point || {};
+        container.innerHTML = `
+            <div class="legal-summary">
+                No legal comparison
+                results were returned.
+            </div>
+        `;
 
-                const comparison =
-                    item.comparison || {};
+        return;
 
-                const status =
-                    String(
-                        comparison.status ||
-                        "NOT VERIFIED"
-                    ).toUpperCase();
-
-                const badgeClass =
-                    status
-                        .toLowerCase()
-                        .replaceAll(
-                            " ",
-                            "-"
-                        );
-
-                const articles =
-                    Array.isArray(
-                        comparison
-                            .relevant_articles
-                    )
-                        ? comparison
-                            .relevant_articles
-                        : [];
+    }
 
 
-                const sourcesHtml =
-                    articles.length
-                        ? articles
-                            .map(
-                                article => {
+    items.forEach(
+        (item, index) => {
 
-                                    const sourceUrl =
-                                        String(
-                                            article
-                                                .source_url ||
-                                            ""
-                                        );
+            const point =
+                item.point || {};
 
-                                    const safeUrl =
-                                        sourceUrl
-                                            .startsWith(
-                                                "https://"
-                                            )
-                                            ? escapeHtml(
-                                                sourceUrl
-                                            )
-                                            : "";
+            const comparison =
+                item.comparison || {};
 
+            const status =
+                String(
+                    comparison.status ||
+                    "NOT VERIFIED"
+                ).toUpperCase();
 
-                                    return `
-                                        <div
-                                            class="legal-source"
-                                        >
-                                            <strong>
-                                                Law ${
-                                                    escapeHtml(
-                                                        article
-                                                            .law_number ||
-                                                        "—"
-                                                    )
-                                                }
-                                                /
-                                                ${
-                                                    escapeHtml(
-                                                        article
-                                                            .year ||
-                                                        "—"
-                                                    )
-                                                }
-                                                —
-                                                Article ${
-                                                    escapeHtml(
-                                                        article
-                                                            .article ||
-                                                        "—"
-                                                    )
-                                                }
-                                            </strong>
-
-                                            <div>
-                                                ${
-                                                    escapeHtml(
-                                                        article
-                                                            .reason ||
-                                                        ""
-                                                    )
-                                                }
-                                            </div>
-
-                                            ${
-                                                safeUrl
-                                                    ? `
-                                                        <a
-                                                            href="${safeUrl}"
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                        >
-                                                            Official source
-                                                        </a>
-                                                    `
-                                                    : ""
-                                            }
-                                        </div>
-                                    `;
-
-                                }
-                            )
-                            .join("")
-                        : `
-                            <div
-                                class="legal-source"
-                            >
-                                No verified relevant
-                                article was selected
-                                for this point.
-                            </div>
-                        `;
-
-
-                const card =
-                    document.createElement(
-                        "div"
+            const badgeClass =
+                status
+                    .toLowerCase()
+                    .replaceAll(
+                        " ",
+                        "-"
                     );
 
-                card.className =
-                    "legal-point";
+            const articles =
+                Array.isArray(
+                    comparison
+                        .relevant_articles
+                )
+                    ? comparison
+                        .relevant_articles
+                    : [];
 
 
-                card.innerHTML = `
+            const sourcesHtml =
+                articles.length
+                    ? articles
+                        .map(
+                            article => {
 
-                    <div
-                        class="legal-point-top"
-                    >
+                                const sourceUrl =
+                                    String(
+                                        article
+                                            .source_url ||
+                                        ""
+                                    );
 
-                        <h4>
-                            Point ${
-                                escapeHtml(
+                                const safeUrl =
+                                    sourceUrl
+                                        .startsWith(
+                                            "https://"
+                                        )
+                                        ? escapeHtml(
+                                            sourceUrl
+                                        )
+                                        : "";
+
+
+                                return `
+                                    <div
+                                        class="legal-source"
+                                    >
+                                        <strong>
+                                            Law ${
+                                                escapeHtml(
+                                                    article
+                                                        .law_number ||
+                                                    "—"
+                                                )
+                                            }
+                                            /
+                                            ${
+                                                escapeHtml(
+                                                    article
+                                                        .year ||
+                                                    "—"
+                                                )
+                                            }
+                                            —
+                                            Article ${
+                                                escapeHtml(
+                                                    article
+                                                        .article ||
+                                                    "—"
+                                                )
+                                            }
+                                        </strong>
+
+                                        <div>
+                                            ${
+                                                escapeHtml(
+                                                    article
+                                                        .reason ||
+                                                    ""
+                                                )
+                                            }
+                                        </div>
+
+                                        ${
+                                            safeUrl
+                                                ? `
+                                                    <a
+                                                        href="${safeUrl}"
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
+                                                        Official source ↗
+                                                    </a>
+                                                `
+                                                : ""
+                                        }
+                                    </div>
+                                `;
+
+                            }
+                        )
+                        .join("")
+                    : `
+                        <div
+                            class="legal-source"
+                        >
+                            No verified relevant
+                            article was selected
+                            for this point.
+                        </div>
+                    `;
+
+
+            const card =
+                document.createElement(
+                    "div"
+                );
+
+            card.className =
+                index === 0
+                    ? "legal-point is-open"
+                    : "legal-point";
+
+
+            card.innerHTML = `
+
+                <div
+                    class="legal-point-top"
+                    role="button"
+                    tabindex="0"
+                    aria-expanded="${
+                        index === 0
+                            ? "true"
+                            : "false"
+                    }"
+                >
+
+                    <h4>
+                        <span
+                            style="
+                                display:inline-flex;
+                                align-items:center;
+                                justify-content:center;
+                                width:30px;
+                                height:30px;
+                                margin-right:11px;
+                                border-radius:9px;
+                                background:rgba(139,92,246,.12);
+                                border:1px solid rgba(167,139,250,.20);
+                                color:#c4b5fd;
+                                font-size:11px;
+                                font-weight:800;
+                                vertical-align:middle;
+                            "
+                        >
+                            ${
+                                String(
                                     point
                                         .point_number ||
                                     index + 1
-                                )
-                            }
-                            —
-                            ${
-                                escapeHtml(
-                                    point.title ||
-                                    "Untitled point"
-                                )
-                            }
-                        </h4>
-
-                        <span
-                            class="legal-badge ${badgeClass}"
-                        >
-                            ${
-                                escapeHtml(
-                                    status
+                                ).padStart(
+                                    2,
+                                    "0"
                                 )
                             }
                         </span>
 
-                    </div>
-
-
-                    <div
-                        class="legal-field"
-                    >
-
-                        <strong>
-                            Document clause
-                        </strong>
-
                         ${
                             escapeHtml(
-                                point
-                                    .original_text ||
-                                "—"
+                                point.title ||
+                                "Untitled point"
                             )
                         }
+                    </h4>
 
-                    </div>
 
-
-                    <div
-                        class="legal-field"
+                    <span
+                        class="legal-badge ${badgeClass}"
                     >
-
-                        <strong>
-                            Analysis
-                        </strong>
-
                         ${
                             escapeHtml(
-                                comparison
-                                    .explanation ||
-                                "—"
+                                status
                             )
                         }
+                    </span>
 
-                    </div>
-
-
-                    <div
-                        class="legal-field"
-                    >
-
-                        <strong>
-                            Recommendation
-                        </strong>
-
-                        ${
-                            escapeHtml(
-                                comparison
-                                    .recommendation ||
-                                "—"
-                            )
-                        }
-
-                    </div>
+                </div>
 
 
-                    <div
-                        class="legal-field"
-                    >
+                <div
+                    class="legal-field"
+                >
 
-                        <strong>
-                            Relevant Bahrain
-                            provisions
-                        </strong>
+                    <strong>
+                        Document clause
+                    </strong>
 
-                        ${sourcesHtml}
+                    ${
+                        escapeHtml(
+                            point
+                                .original_text ||
+                            "—"
+                        )
+                    }
 
-                    </div>
-                `;
+                </div>
 
 
-                container.appendChild(
-                    card
+                <div
+                    class="legal-field"
+                >
+
+                    <strong>
+                        Analysis
+                    </strong>
+
+                    ${
+                        escapeHtml(
+                            comparison
+                                .explanation ||
+                            "—"
+                        )
+                    }
+
+                </div>
+
+
+                <div
+                    class="legal-field"
+                >
+
+                    <strong>
+                        Recommendation
+                    </strong>
+
+                    ${
+                        escapeHtml(
+                            comparison
+                                .recommendation ||
+                            "—"
+                        )
+                    }
+
+                </div>
+
+
+                <div
+                    class="legal-field"
+                >
+
+                    <strong>
+                        Relevant Bahrain provisions
+                    </strong>
+
+                    ${sourcesHtml}
+
+                </div>
+            `;
+
+
+            const header =
+                card.querySelector(
+                    ".legal-point-top"
                 );
 
-            }
-        );
 
-    }
+            const toggleCard =
+                () => {
+
+                    const isOpen =
+                        card.classList.toggle(
+                            "is-open"
+                        );
+
+                    header.setAttribute(
+                        "aria-expanded",
+                        isOpen
+                            ? "true"
+                            : "false"
+                    );
+
+                };
+
+
+            header.addEventListener(
+                "click",
+                toggleCard
+            );
+
+
+            header.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key ===
+                            "Enter" ||
+                        event.key ===
+                            " "
+                    ) {
+
+                        event.preventDefault();
+
+                        toggleCard();
+
+                    }
+
+                }
+            );
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
 
 
     async function analyzeDocument() {
@@ -3392,215 +4634,325 @@
     }
 
 
-    function renderDesignCompliance(
-        items
-    ) {
+   function renderDesignCompliance(
+    items
+) {
 
-        const container =
-            document.getElementById(
-                "designComplianceList"
-            );
+    const container =
+        document.getElementById(
+            "designComplianceList"
+        );
 
-        container.innerHTML = "";
-
-
-        if (!items.length) {
-
-            container.innerHTML = `
-                <div class="legal-summary">
-                    No NEA compliance results
-                    were returned.
-                </div>
-            `;
-
-            return;
-
-        }
+    container.innerHTML = "";
 
 
-        items.forEach(
-            (item, index) => {
+    if (!items.length) {
 
-                const status =
-                    String(
-                        item.status ||
-                        "NOT VERIFIED"
-                    ).toUpperCase();
+        container.innerHTML = `
+            <div class="legal-summary">
+                No NEA compliance results
+                were returned.
+            </div>
+        `;
 
+        return;
 
-                const badgeClass =
-                    status
-                        .toLowerCase()
-                        .replaceAll(
-                            " ",
-                            "-"
-                        );
+    }
 
 
-                const sourceUrl =
-                    String(
-                        item.source_url ||
-                        ""
+    items.forEach(
+        (item, index) => {
+
+            const status =
+                String(
+                    item.status ||
+                    "NOT VERIFIED"
+                ).toUpperCase();
+
+
+            const badgeClass =
+                status
+                    .toLowerCase()
+                    .replaceAll(
+                        " ",
+                        "-"
                     );
 
 
-                const safeUrl =
-                    sourceUrl
-                        .startsWith(
-                            "https://"
-                        )
-                        ? escapeHtml(
-                            sourceUrl
-                        )
-                        : "";
+            const sourceUrl =
+                String(
+                    item.source_url ||
+                    ""
+                );
 
 
-                const card =
-                    document.createElement(
-                        "div"
-                    );
+            const safeUrl =
+                sourceUrl
+                    .startsWith(
+                        "https://"
+                    )
+                    ? escapeHtml(
+                        sourceUrl
+                    )
+                    : "";
 
-                card.className =
-                    "legal-point";
+
+            const card =
+                document.createElement(
+                    "div"
+                );
 
 
-                card.innerHTML = `
+            card.className =
+                index === 0
+                    ? "legal-point is-open"
+                    : "legal-point";
 
-                    <div
-                        class="legal-point-top"
-                    >
 
-                        <h4>
-                            ${
-                                escapeHtml(
-                                    item
-                                        .section_number ||
-                                    index + 1
-                                )
-                            }
-                            —
-                            ${
-                                escapeHtml(
-                                    item.title ||
-                                    "NEA Requirement"
-                                )
-                            }
-                        </h4>
+            card.innerHTML = `
 
+                <div
+                    class="legal-point-top"
+                    role="button"
+                    tabindex="0"
+                    aria-expanded="${
+                        index === 0
+                            ? "true"
+                            : "false"
+                    }"
+                >
+
+                    <h4>
 
                         <span
-                            class="legal-badge ${badgeClass}"
+                            style="
+                                display:inline-flex;
+                                align-items:center;
+                                justify-content:center;
+                                width:30px;
+                                height:30px;
+                                margin-right:11px;
+                                border-radius:9px;
+                                background:rgba(139,92,246,.12);
+                                border:1px solid rgba(167,139,250,.20);
+                                color:#c4b5fd;
+                                font-size:11px;
+                                font-weight:800;
+                                vertical-align:middle;
+                            "
                         >
                             ${
-                                escapeHtml(
-                                    status
+                                String(
+                                    index + 1
+                                ).padStart(
+                                    2,
+                                    "0"
                                 )
                             }
                         </span>
 
-                    </div>
-
-
-                    <div
-                        class="legal-field"
-                    >
-
-                        <strong>
-                            Observed Evidence
-                        </strong>
-
                         ${
                             escapeHtml(
-                                item
-                                    .observed_evidence ||
-                                "No visual evidence provided."
+                                item.title ||
+                                "NEA Requirement"
                             )
                         }
 
-                    </div>
+                    </h4>
 
 
-                    <div
-                        class="legal-field"
+                    <span
+                        class="legal-badge ${badgeClass}"
                     >
-
-                        <strong>
-                            Analysis
-                        </strong>
-
                         ${
                             escapeHtml(
-                                item.analysis ||
-                                "—"
+                                status
                             )
                         }
+                    </span>
 
-                    </div>
-
-
-                    <div
-                        class="legal-field"
-                    >
-
-                        <strong>
-                            Recommendation
-                        </strong>
-
-                        ${
-                            escapeHtml(
-                                item
-                                    .recommendation ||
-                                "—"
-                            )
-                        }
-
-                    </div>
+                </div>
 
 
-                    <div
-                        class="legal-field"
-                    >
+                <div
+                    class="legal-field"
+                >
 
-                        <strong>
-                            Official NEA Source
-                        </strong>
+                    <strong>
+                        NEA Section
+                    </strong>
 
+                    ${
+                        escapeHtml(
+                            item
+                                .section_number ||
+                            "—"
+                        )
+                    }
 
-                        <div
-                            class="legal-source"
-                        >
-
-                            ${
-                                safeUrl
-                                    ? `
-                                        <a
-                                            href="${safeUrl}"
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                        >
-                                            Open official source
-                                        </a>
-                                    `
-                                    : `
-                                        No official source
-                                        URL was returned.
-                                    `
-                            }
-
-                        </div>
-
-                    </div>
-                `;
+                </div>
 
 
-                container.appendChild(
-                    card
+                <div
+                    class="legal-field"
+                >
+
+                    <strong>
+                        Observed Evidence
+                    </strong>
+
+                    ${
+                        escapeHtml(
+                            item
+                                .observed_evidence ||
+                            "No visual evidence provided."
+                        )
+                    }
+
+                </div>
+
+
+                <div
+                    class="legal-field"
+                >
+
+                    <strong>
+                        Analysis
+                    </strong>
+
+                    ${
+                        escapeHtml(
+                            item.analysis ||
+                            "—"
+                        )
+                    }
+
+                </div>
+
+
+                <div
+                    class="legal-field"
+                >
+
+                    <strong>
+                        Recommendation
+                    </strong>
+
+                    ${
+                        escapeHtml(
+                            item
+                                .recommendation ||
+                            "—"
+                        )
+                    }
+
+                </div>
+
+
+                <div
+                    class="legal-field"
+                >
+
+                    <strong>
+                        Official NEA Source
+                    </strong>
+
+                    ${
+                        safeUrl
+                            ? `
+                                <div
+                                    class="legal-source"
+                                >
+                                    <div>
+                                        Bahrain National
+                                        Enterprise Architecture
+                                        (NEA)
+                                    </div>
+
+                                    <a
+                                        href="${safeUrl}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        View official source ↗
+                                    </a>
+                                </div>
+                            `
+                            : `
+                                <div
+                                    class="legal-source"
+                                >
+                                    No verified official
+                                    source URL was returned.
+                                </div>
+                            `
+                    }
+
+                </div>
+
+            `;
+
+
+            const header =
+                card.querySelector(
+                    ".legal-point-top"
                 );
 
-            }
-        );
 
-    }
+            const toggleCard =
+                () => {
+
+                    const isOpen =
+                        card.classList.toggle(
+                            "is-open"
+                        );
+
+
+                    header.setAttribute(
+                        "aria-expanded",
+                        isOpen
+                            ? "true"
+                            : "false"
+                    );
+
+                };
+
+
+            header.addEventListener(
+                "click",
+                toggleCard
+            );
+
+
+            header.addEventListener(
+                "keydown",
+                event => {
+
+                    if (
+                        event.key ===
+                            "Enter" ||
+                        event.key ===
+                            " "
+                    ) {
+
+                        event.preventDefault();
+
+                        toggleCard();
+
+                    }
+
+                }
+            );
+
+
+            container.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
 
 
     async function analyzeDesign() {
