@@ -2212,35 +2212,22 @@ user-select: none;
 #legalAnalysisList .legal-field,
 #designComplianceList .legal-field {
     margin: 0;
-
-    padding: 18px 20px;
-
-    border-top:
-        1px solid var(--border);
-
-    color: #d4dce7;
-
-    font-size: 13px;
-
-    line-height: 1.72;
-
+    padding: 14px 20px;
+    border-top: 1px solid var(--border);
+    color: #e5eaf3;
+    font-size: 16px;
+    line-height: 1.65;
     white-space: pre-wrap;
 }
 
 #legalAnalysisList .legal-field strong,
 #designComplianceList .legal-field strong {
     display: block;
-
-    margin-bottom: 8px;
-
-    color: #8f9db0;
-
-    font-size: 10px;
-
+    margin-bottom: 6px;
+    color: #b8c6da;
+    font-size: 13px;
     font-weight: 800;
-
-    letter-spacing: 0.8px;
-
+    letter-spacing: 0.5px;
     text-transform: uppercase;
 }
 
@@ -2562,6 +2549,38 @@ footer {
     .analysis-metadata {
         grid-template-columns: 1fr;
     }
+}
+/* Improve readability of analysis results */
+#designComplianceList {
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+#designComplianceList .result-card,
+#designComplianceList .compliance-card,
+#designComplianceList .finding-card {
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+#designComplianceList p,
+#designComplianceList li,
+#designComplianceList .detail-value {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+    color: #e5eaf3;
+}
+
+#designComplianceList .detail-label,
+#designComplianceList .section-label {
+    font-size: 12px !important;
+    letter-spacing: 0.5px;
+    color: #aebbd0;
+}
+
+#designComplianceList .finding-details,
+#designComplianceList .compliance-details {
+    gap: 12px;
 }
     </style>
 

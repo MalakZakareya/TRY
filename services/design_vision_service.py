@@ -2,23 +2,22 @@ import base64
 import json
 from typing import Any, cast
 
-from openai import OpenAI
-
 from core.config import settings
+from services.ai_provider import generate_ai_vision
 
 
 class DesignVisionError(Exception):
     pass
 
 
-client = OpenAI(
-    api_key=settings.OPENAI_API_KEY
-)
-
-
 def image_bytes_to_data_url(
     image_bytes: bytes,
 ) -> str:
+    """
+    Convert image bytes into a base64 data URL
+    that can be sent to a vision-capable AI model.
+    """
+
     encoded = base64.b64encode(
         image_bytes
     ).decode("utf-8")
@@ -32,6 +31,11 @@ def image_bytes_to_data_url(
 def clean_json_response(
     text: str,
 ) -> str:
+    """
+    Remove optional Markdown code fences from
+    an AI JSON response.
+    """
+
     cleaned = text.strip()
 
     if cleaned.startswith("```json"):
@@ -53,7 +57,7 @@ def get_test_design_analysis(
     Return mock visual observations when TEST_MODE
     is enabled.
 
-    No OpenAI API request is made.
+    No AI provider request is made.
     """
 
     observations: list[dict[str, Any]] = [
@@ -124,6 +128,17 @@ def get_test_design_analysis(
 def analyze_design_images(
     design_images: list[bytes],
 ) -> dict[str, Any]:
+    """
+    Analyze prepared design images.
+
+    TEST_MODE:
+    Returns deterministic mock observations.
+
+    REAL AI MODE:
+    Sends the design images through the centrally
+    selected AI provider and vision-capable model.
+    """
+
     if not design_images:
         raise DesignVisionError(
             "No design images were provided."
@@ -138,7 +153,7 @@ def analyze_design_images(
         )
 
     # ---------------------------------------------------------
-    # REAL OPENAI VISION MODE
+    # REAL AI VISION MODE
     # ---------------------------------------------------------
 
     prompt = """
@@ -202,44 +217,25 @@ If something cannot be determined visually,
 do not invent it.
 """
 
-    content: list[Any] = [
-        {
-            "type": "input_text",
-            "text": prompt,
-        }
-    ]
+    image_data_urls: list[str] = []
 
     for image_bytes in design_images:
         data_url = image_bytes_to_data_url(
             image_bytes
         )
 
-        content.append(
-            {
-                "type": "input_image",
-                "image_url": data_url,
-                "detail": "high",
-            }
+        image_data_urls.append(
+            data_url
         )
 
     try:
-        response = client.responses.create(
-            model="gpt-5.6",
-            input=[
-                {
-                    "role": "user",
-                    "content": content,
-                }
-            ],
+        # -----------------------------------------------------
+        # SELECTED AI PROVIDER
+        # -----------------------------------------------------
+        output_text = generate_ai_vision(
+            prompt=prompt,
+            image_data_urls=image_data_urls,
         )
-
-        output_text = response.output_text
-
-        if not output_text:
-            raise DesignVisionError(
-                "AI returned an empty "
-                "design analysis."
-            )
 
         cleaned = clean_json_response(
             output_text

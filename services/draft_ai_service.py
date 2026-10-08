@@ -1,10 +1,8 @@
 import json
-
 from typing import Any, cast
 
-from openai import OpenAI
-
 from core.config import settings
+from services.ai_provider import generate_ai_text
 from services.draft_service import (
     get_draft_sections,
     get_draft_type,
@@ -15,11 +13,6 @@ class DraftAIServiceError(Exception):
     pass
 
 
-client = OpenAI(
-    api_key=settings.OPENAI_API_KEY
-)
-
-
 def clean_json_response(
     text: str,
 ) -> str:
@@ -27,6 +20,7 @@ def clean_json_response(
 
     if cleaned.startswith("```json"):
         cleaned = cleaned[7:]
+
     elif cleaned.startswith("```"):
         cleaned = cleaned[3:]
 
@@ -47,11 +41,10 @@ def group_requirements_by_topic(
 
     grouped: dict[
         str,
-        list[dict[str, Any]]
+        list[dict[str, Any]],
     ] = {}
 
     for requirement in legal_requirements:
-
         topic = str(
             requirement.get(
                 "legal_topic",
@@ -90,15 +83,13 @@ def prepare_legal_context(
 
     prepared: dict[
         str,
-        list[dict[str, Any]]
+        list[dict[str, Any]],
     ] = {}
 
     for topic, requirements in grouped.items():
-
         prepared[topic] = []
 
         for requirement in requirements:
-
             prepared[topic].append(
                 {
                     "regulation_id": str(
@@ -177,7 +168,7 @@ def build_draft_prompt(
     legal_requirements: list[dict[str, Any]],
 ) -> str:
     """
-    Build the prompt for Real OpenAI Mode.
+    Build the prompt for Real AI Mode.
 
     The AI receives:
     - user details
@@ -220,16 +211,20 @@ You are creating a professional legal or business
 document draft for use in the Kingdom of Bahrain.
 
 DRAFT TYPE:
+
 {draft_config["name"]}
 
 USER-PROVIDED DETAILS:
+
 {details_json}
 
 REQUIRED DOCUMENT STRUCTURE:
+
 {sections_json}
 
 TRUSTED RETRIEVED BAHRAIN LEGAL MATERIAL,
 GROUPED BY LEGAL TOPIC:
+
 {legal_json}
 
 
@@ -366,7 +361,7 @@ def get_test_used_requirements(
     legal identifiers.
 
     This allows the validation layer to be tested
-    without making an OpenAI API request.
+    without making an AI provider request.
     """
 
     used_requirements: list[
@@ -376,7 +371,6 @@ def get_test_used_requirements(
     seen: set[str] = set()
 
     for requirement in legal_requirements:
-
         law_id, article_number = (
             get_requirement_identifier(
                 requirement
@@ -441,8 +435,6 @@ def get_detail(
         return cleaned
 
     return fallback
-
-
 def build_test_section_content(
     section_key: str,
     section_title: str,
@@ -455,13 +447,12 @@ def build_test_section_content(
     This does NOT attempt to replace the real AI.
     It creates a structured document so the entire
     workflow, retrieval and validation pipeline can
-    be tested without OpenAI credits.
+    be tested without AI provider credits.
     """
 
     lines: list[str] = []
 
     if section_key == "parties":
-
         employer = get_detail(
             details,
             "employer_name",
@@ -482,7 +473,6 @@ def build_test_section_content(
         "appointment",
         "appointment_and_job_duties",
     }:
-
         employee = get_detail(
             details,
             "employee_name",
@@ -509,7 +499,6 @@ def build_test_section_content(
         "term",
         "term_and_commencement",
     }:
-
         start_date = get_detail(
             details,
             "start_date",
@@ -534,7 +523,6 @@ def build_test_section_content(
         "probation",
         "probation_period",
     }:
-
         lines.append(
             "Any probation arrangement shall be "
             "recorded expressly in the final "
@@ -548,7 +536,6 @@ def build_test_section_content(
         "salary_and_payment",
         "compensation",
     }:
-
         salary = get_detail(
             details,
             "salary",
@@ -569,7 +556,6 @@ def build_test_section_content(
         "working_hours",
         "working_hours_and_rest_periods",
     }:
-
         lines.append(
             "Working hours, rest periods and any "
             "applicable overtime arrangements "
@@ -583,7 +569,6 @@ def build_test_section_content(
         "annual_leave",
         "leave",
     }:
-
         lines.append(
             "Annual leave entitlement and its "
             "administration shall be handled in "
@@ -593,7 +578,6 @@ def build_test_section_content(
         )
 
     elif section_key == "sick_leave":
-
         lines.append(
             "Sick leave shall be administered in "
             "accordance with the applicable "
@@ -606,7 +590,6 @@ def build_test_section_content(
         "confidentiality_and_data_protection",
         "data_protection",
     }:
-
         lines.append(
             "The parties shall protect confidential "
             "information and personal data handled "
@@ -619,7 +602,6 @@ def build_test_section_content(
         "termination",
         "termination_and_notice",
     }:
-
         lines.append(
             "Termination and any applicable notice "
             "requirements shall be handled in "
@@ -632,7 +614,6 @@ def build_test_section_content(
         "end_of_service",
         "end_of_service_rights",
     }:
-
         lines.append(
             "Any end-of-service rights shall be "
             "determined using the applicable "
@@ -645,7 +626,6 @@ def build_test_section_content(
         "governing_law",
         "applicable_law",
     }:
-
         lines.append(
             "This document is intended for use in "
             "the Kingdom of Bahrain and is subject "
@@ -656,23 +636,21 @@ def build_test_section_content(
         "signatures",
         "signature",
     }:
-
         lines.extend(
             [
                 "Employer:",
                 "Name: __________________________",
-                "Signature: _____________________",
+                "Signature: ____________________",
                 "Date: __________________________",
                 "",
                 "Employee / Other Party:",
                 "Name: __________________________",
-                "Signature: _____________________",
+                "Signature: ____________________",
                 "Date: __________________________",
             ]
         )
 
     else:
-
         lines.append(
             f"This section ({section_title}) shall "
             "contain the terms agreed by the "
@@ -681,12 +659,10 @@ def build_test_section_content(
         )
 
     if topic_requirements:
-
         unique_articles: list[str] = []
         seen_articles: set[str] = set()
 
         for requirement in topic_requirements:
-
             law_id, article_number = (
                 get_requirement_identifier(
                     requirement
@@ -717,7 +693,6 @@ def build_test_section_content(
             )
 
         if unique_articles:
-
             lines.append("")
 
             lines.append(
@@ -745,7 +720,7 @@ def get_test_draft(
     Real user details and real retrieved Bahrain
     legal references are used.
 
-    No OpenAI API request is made.
+    No AI provider request is made.
     """
 
     draft_config = get_draft_type(
@@ -770,11 +745,9 @@ def get_test_draft(
     ]
 
     if sections:
-
         section_number = 1
 
         for section in sections:
-
             section_key = str(
                 section.get(
                     "key",
@@ -844,7 +817,6 @@ def get_test_draft(
             )
 
             lines.append("")
-
             section_number += 1
 
     else:
@@ -857,7 +829,6 @@ def get_test_draft(
         )
 
         for field_name, value in details.items():
-
             lines.append(
                 readable_field_name(
                     field_name
@@ -879,7 +850,7 @@ def get_test_draft(
     notes = [
         (
             "TEST MODE is enabled. "
-            "OpenAI was not called."
+            "No AI provider was called."
         ),
         (
             "The document structure, submitted "
@@ -895,7 +866,6 @@ def get_test_draft(
     ]
 
     if not legal_requirements:
-
         notes.append(
             "No Bahrain legal material was "
             "retrieved for this draft."
@@ -909,13 +879,12 @@ def get_test_draft(
             used_requirements
         ),
     }
-
-
 def normalize_ai_used_requirements(
     used_raw: Any,
 ) -> list[dict[str, str]]:
     """
-    Normalize references returned by OpenAI.
+    Normalize references returned by the AI provider.
+
     Final trust validation is performed later
     by draft_validation_service.py.
     """
@@ -936,7 +905,6 @@ def normalize_ai_used_requirements(
         list[Any],
         used_raw,
     ):
-
         if not isinstance(
             item,
             dict,
@@ -1008,7 +976,6 @@ def normalize_notes(
         list[Any],
         notes_raw,
     ):
-
         if not isinstance(
             item,
             str,
@@ -1036,7 +1003,6 @@ def generate_draft(
     # =========================================================
 
     if settings.TEST_MODE:
-
         return get_test_draft(
             draft_type=draft_type,
             details=details,
@@ -1046,7 +1012,7 @@ def generate_draft(
         )
 
     # =========================================================
-    # REAL OPENAI MODE
+    # REAL AI MODE
     # =========================================================
 
     prompt = build_draft_prompt(
@@ -1058,14 +1024,8 @@ def generate_draft(
     )
 
     try:
-
-        response = client.responses.create(
-            model="gpt-5.6",
-            input=prompt,
-        )
-
-        output_text = (
-            response.output_text
+        output_text = generate_ai_text(
+            prompt
         )
 
         if not output_text:

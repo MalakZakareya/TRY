@@ -12,15 +12,48 @@ class Settings(BaseSettings):
     CORS_ORIGINS: list[str] = ["*"]
     UPLOAD_DIR: str = "uploads"
 
-    # OpenAI
-    OPENAI_API_KEY: str = ""
+    # ---------------------------------------------------------
+    # AI Provider
+    # ---------------------------------------------------------
+    # Available options:
+    # openai
+    # openrouter
+    # groq
+    # gemini
+    AI_PROVIDER: str = "openai"
 
+    # ---------------------------------------------------------
+    # OpenAI
+    # ---------------------------------------------------------
+    OPENAI_API_KEY: str = ""
+    OPENAI_MODEL: str = "gpt-5.6"
+
+    # ---------------------------------------------------------
+    # OpenRouter
+    # ---------------------------------------------------------
+    OPENROUTER_API_KEY: str = ""
+    OPENROUTER_MODEL: str = ""
+
+    # ---------------------------------------------------------
+    # Groq
+    # ---------------------------------------------------------
+    GROQ_API_KEY: str = ""
+    GROQ_MODEL: str = ""
+
+    # ---------------------------------------------------------
+    # Google Gemini
+    # ---------------------------------------------------------
+    GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = ""
+
+    # ---------------------------------------------------------
     # Test Mode
+    # ---------------------------------------------------------
     TEST_MODE: bool = True
 
     model_config = SettingsConfigDict(
         env_file=".env",
-        extra="ignore"
+        extra="ignore",
     )
 
 

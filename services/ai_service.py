@@ -1,12 +1,8 @@
 import json
-from typing import Any
-
-from openai import OpenAI
+from typing import Any, cast
 
 from core.config import settings
-
-
-client = OpenAI(api_key=settings.OPENAI_API_KEY)
+from services.ai_provider import generate_ai_text
 
 
 def get_test_analysis() -> dict[str, Any]:
@@ -14,7 +10,7 @@ def get_test_analysis() -> dict[str, Any]:
     Return a mock AI result when TEST_MODE is enabled.
 
     This allows the full document-analysis workflow
-    to be tested without using OpenAI credits.
+    to be tested without using AI credits.
     """
 
     return {
@@ -23,7 +19,7 @@ def get_test_analysis() -> dict[str, Any]:
         "summary": (
             "This is a test-mode document analysis result. "
             "The system successfully received and processed "
-            "the uploaded document without calling OpenAI."
+            "the uploaded document without calling an AI provider."
         ),
         "points": [
             {
@@ -90,27 +86,32 @@ def get_test_analysis() -> dict[str, Any]:
     }
 
 
-def analyze_document_text(document_text: str) -> dict[str, Any]:
+def analyze_document_text(
+    document_text: str,
+) -> dict[str, Any]:
     """
     Read the extracted document text and identify its important
     clauses, requirements, obligations, rights, dates, amounts,
     conditions, and other meaningful points.
 
     When TEST_MODE is enabled, a mock AI result is returned
-    without making an OpenAI API request.
+    without making an external AI API request.
     """
 
     if not document_text.strip():
-        raise ValueError("Document text is empty.")
+        raise ValueError(
+            "Document text is empty."
+        )
 
     # ---------------------------------------------------------
     # TEST MODE
     # ---------------------------------------------------------
+
     if settings.TEST_MODE:
         return get_test_analysis()
 
     # ---------------------------------------------------------
-    # REAL OPENAI MODE
+    # REAL AI MODE
     # ---------------------------------------------------------
 
     prompt = f"""
@@ -167,12 +168,13 @@ DOCUMENT:
 --------------------
 """
 
-    response = client.responses.create(
-        model="gpt-5.6",
-        input=prompt,
-    )
+    # ---------------------------------------------------------
+    # SELECTED AI PROVIDER
+    # ---------------------------------------------------------
 
-    result_text = response.output_text.strip()
+    result_text = generate_ai_text(
+        prompt
+    ).strip()
 
     # Remove Markdown fences if the model returned them.
     if result_text.startswith("```json"):
@@ -187,7 +189,22 @@ DOCUMENT:
     result_text = result_text.strip()
 
     try:
-        return json.loads(result_text)
+        parsed_result: Any = json.loads(
+            result_text
+        )
+
+        if not isinstance(
+            parsed_result,
+            dict,
+        ):
+            raise ValueError(
+                "The AI returned an invalid JSON structure."
+            )
+
+        return cast(
+            dict[str, Any],
+            parsed_result,
+        )
 
     except json.JSONDecodeError as exc:
         raise ValueError(

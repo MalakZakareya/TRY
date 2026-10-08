@@ -1,18 +1,12 @@
 import json
 from typing import Any, cast
 
-from openai import OpenAI
-
 from core.config import settings
+from services.ai_provider import generate_ai_text
 
 
 class DesignComplianceError(Exception):
     pass
-
-
-client = OpenAI(
-    api_key=settings.OPENAI_API_KEY
-)
 
 
 ALLOWED_STATUSES = {
@@ -23,11 +17,14 @@ ALLOWED_STATUSES = {
 }
 
 
-def clean_json_response(text: str) -> str:
+def clean_json_response(
+    text: str,
+) -> str:
     cleaned = text.strip()
 
     if cleaned.startswith("```json"):
         cleaned = cleaned[7:]
+
     elif cleaned.startswith("```"):
         cleaned = cleaned[3:]
 
@@ -130,7 +127,8 @@ def find_trusted_requirement(
     nea_requirements: list[dict[str, Any]],
 ) -> dict[str, Any] | None:
     """
-    Find the real NEA requirement corresponding to an AI result.
+    Find the real NEA requirement corresponding
+    to an AI result.
 
     First try section number + title.
     If that fails, fall back to section number only.
@@ -188,9 +186,10 @@ def build_safe_requirements_for_ai(
     """
     Build the requirements sent to the AI.
 
-    Source metadata is included for context, but the final
-    source returned to the frontend is always restored from
-    the trusted knowledge base after the AI response.
+    Source metadata is included for context, but
+    the final source returned to the frontend is
+    always restored from the trusted knowledge
+    base after the AI response.
     """
 
     safe_requirements: list[
@@ -303,19 +302,23 @@ For each relevant NEA requirement, determine one
 of these statuses:
 
 PASS:
+
 The visual evidence clearly shows that the
 requirement is satisfied.
 
 ISSUE:
+
 The visual evidence clearly shows a conflict
 with the requirement.
 
 WARNING:
+
 There is visible evidence of a possible concern,
 but the evidence is not sufficient for a definite
 ISSUE.
 
 NOT VERIFIED:
+
 The requirement cannot be reliably checked from
 the supplied visual design alone.
 
@@ -361,8 +364,6 @@ Return valid JSON only in this exact structure:
     ]
 }}
 """
-
-
 def validate_compliance_results(
     raw_results: Any,
     nea_requirements: list[dict[str, Any]],
@@ -529,7 +530,7 @@ def get_test_compliance_results(
     Build mock compliance results from the REAL
     NEA requirements retrieved from the knowledge base.
 
-    No OpenAI API request is made.
+    No AI provider request is made.
 
     Official source URLs are taken directly from
     the trusted NEA knowledge base.
@@ -588,6 +589,7 @@ def get_test_compliance_results(
                     "Test-mode visual observation.",
                 )
             ).strip()
+
         else:
             observed_evidence = (
                 "No visual observation was "
@@ -664,12 +666,23 @@ def get_test_compliance_results(
         )
 
     return results
-
-
 def analyze_design_compliance(
     observations: list[dict[str, Any]],
     nea_requirements: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
+    """
+    Compare visual design observations against
+    retrieved Bahrain NEA requirements.
+
+    TEST_MODE:
+    Returns deterministic mock compliance results
+    without calling an external AI provider.
+
+    REAL AI MODE:
+    Uses the centrally selected AI provider through
+    generate_ai_text().
+    """
+
     if not nea_requirements:
         return []
 
@@ -684,7 +697,7 @@ def analyze_design_compliance(
         )
 
     # ---------------------------------------------------------
-    # REAL OPENAI MODE
+    # REAL AI MODE
     # ---------------------------------------------------------
 
     prompt = build_compliance_prompt(
@@ -693,13 +706,11 @@ def analyze_design_compliance(
     )
 
     try:
-        response = client.responses.create(
-            model="gpt-5.6",
-            input=prompt,
-        )
-
-        output_text = (
-            response.output_text
+        # -----------------------------------------------------
+        # SELECTED AI PROVIDER
+        # -----------------------------------------------------
+        output_text = generate_ai_text(
+            prompt
         )
 
         if not output_text:
